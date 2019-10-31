@@ -1,5 +1,5 @@
 ---
-  title: "Schedule"
+  title: "Data files"
 ---
 Example data files used in the course
 

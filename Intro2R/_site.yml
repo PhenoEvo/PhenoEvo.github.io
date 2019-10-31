@@ -10,4 +10,4 @@ navbar:
     - text: "Lectures"
       href: lectures.html
     - text: "Data files"
-      href: data-files.html
+      href: data.html
