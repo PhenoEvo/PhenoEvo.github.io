@@ -1,0 +1,14 @@
+theme: jekyll-theme-slate
+name: "Advanced Course: Introduction to R"
+output_dir: "."
+navbar:
+  title: ""
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Schedule"
+      href: schedule.html
+    - text: "Lectures"
+      href: lectures.html
+    - text: "Data files"
+      href: data_files.html

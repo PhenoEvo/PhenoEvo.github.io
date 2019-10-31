@@ -1,0 +1,177 @@
+---
+title: "Introduction to R: Data indexing"
+author: "A. Kaliontzopoulou"
+date: "4-8 November 2019"
+output: html_document
+---
+
+## **Content Description**
+
+This lecture treats how we can retrieve (index) different types of R objects (i.e. vectors, matrices, arrays, dataframes, lists, etc) using simpler or more complex arguments to point to positions within them.
+
+All such operations are done using squared brackets: [], organized in a way that depends on the dimensions and type of the object we are indexing. For dataframes and lists, other options exist, i.e. using the dollar sign: $. 
+
+Indexing for S4 objects is done using the @ sign, but we will not discuss that type of objects here.
+
+## **VECTORS**
+Remember, vectors have a single dimension (if you don´t remember, go back to Lecture 2.1).
+Let´s create a random vector and review its attributes:
+```{r eval=TRUE}
+vec1 <- rnorm(10)
+vec1
+dim(vec1)
+length(vec1)
+```
+
+As we saw yesterday, because vectors have a single dimension, their elements can be retrieved through indexing on the vector positions through numbers:
+```{r eval=TRUE}
+vec1[2]
+vec1[2:5]
+```
+
+Or, we may want to exclude elements from a vector, which is done using negative values:
+```{r eval=FALSE}
+vec1[-1]
+```
+
+We can also use other vectors to index a vector, as such:
+```{r eval=TRUE}
+vec1[c(2, 5, 7)]
+vec1[-c(1, 4)]
+
+```
+
+Things become more complex (and more interesting and flexible) when using logical vectors to index a vector. For instance, we may want to retrieve the values of a vector that fulfill some mathematical criterion.
+```{r eval=TRUE}
+vec1[vec1<0.5]				
+vec1<0.5
+which(vec1<0.5)
+vec1[vec1 < 0.5 & vec1 > -0.5]		
+vec1[vec1 > 0.5 | vec1 < -0.5]
+vec1[vec1>=vec1[1]]
+```
+
+Or we may want to use a classification criterion contained in a second vector, to filter the first one. For instance, imagine that the values in vec1 represent measurements of a character for males and females in a population. I might then have (or create) a second vector, that represents the sex of my individuals, which I can then use to index (aka "filter") the values in the first vector:
+```{r eval=TRUE}
+sex <- as.factor(c(rep("F", 5), rep("M", 5)))
+sex
+vec1.F <- vec1[sex=="F"]
+vec1.F
+vec1.M <- vec1[sex!="F"]		
+vec1.M                     # Which is the same as:
+vec1.M <- vec1[sex=="M"]
+vec1.M
+
+# This simple data subsetting can also be done using the function subset(), which will however not be as flexible for more complex filters.
+vec1.F2 <- subset(vec1, sex=="F")
+```
+
+Always remember that when using logical tests with factors or character strings, you must indicate that the value you are testing against IS a character. This throws an error:
+```{r eval=FALSE}
+vec1.M <- vec1[sex==M]			
+```
+
+## **MATRICES**
+Matrices have two dimensions, i.e. rows and columns. 
+These are indicating using a comma within the squared brakets, i.e. [ , ], where what comes in the first position indexes the rows (as if that were a vector) and what comes in the second indexes the columns.
+As for vectors, we can use numbers or other, more complex arguments to index matrices.
+When leaving one of the two positions **blank**, we are suggesting that we want to keep *all the rows* or *all the columns* of the matrix.
+```{r eval=TRUE}
+mat1 <- matrix(rnorm(25), nrow=5)
+mat1
+dim(mat1)
+
+mat1[2]
+mat1[11]
+mat1[1, 3]
+mat1[1,]
+mat1[,3]
+mat1[,c(2, 5)]
+mat1[,-c(1:3)]
+
+colnames(mat1) <- c("A", "B", "C", "D", "E")
+mat1
+mat1[,"A"]
+mat1[c(2, 1, 3, 5, 4),]
+vec3 <- sample(1:5)
+vec3
+mat1[,vec3]
+```
+
+## **ARRAYS**
+Arrays have three dimensions: rows, columns and "sheets" or objects, where all dimensions are fully corresponding. Intuitively, they are indexed the same way as matrices, but in this case with two commas separating the three positions, i.e. [ , , ].
+Again, leaving one or two of the positions blank, suggests that we want to keep all elements of that dimension.
+```{r eval=TRUE}
+arr1 <- array(rnorm(100), dim=c(10, 2, 5), 
+              dimnames=list(paste("var", 1:10, sep="_"), 
+                            c("M", "F"), 
+                            paste("locality", 210:214, sep=".")))
+arr1
+str(arr1)
+arr1[1,,]
+arr1["var_9",,]
+arr1[,"M",]
+arr1[, "F", "locality.213"]
+```
+
+## **DATAFRAMES**
+Remember that dataframes are like matrices in having two dimensions, but contrary to matrices their columns may include different types of data. If you don´t remember, go back to Lecture 2.2.
+Dataframes can be indexed exactly the same way as matrices, using squared brakets to indicate row (before the comma) and column (after the comma) positions.
+```{r eval=TRUE}
+beav <- read.table("beavers.txt", sep=",", header=T, na="NA")
+beav
+str(beav)
+
+beav[,2]
+beav[,"sex"]
+```
+
+Because dataframes are special R objects, they provide more indexing possibilities, i.e. using the dollar sign or double brackets to refer to whole columns.
+```{r eval=TRUE}
+beav$sex
+beav[["sex"]]
+
+```
+
+Importantly, dataframes allow us to gather different types of information on our dataset in a single R object, which can then be used to subset the dataset or apply filters and retrieve specific information using the variables of interest to index part, or the whole dataset.
+For instance, our dataset may include missing values that we want to filter out.
+```{r eval=TRUE}
+is.na(beav$day)
+which(is.na(beav$day))
+length(which(is.na(beav$day)))
+beav.day.full <- beav[!is.na(beav$day),]
+dim(beav.day.full)
+
+# Careful: na.exclude removes ALL rows that have ANY missing value.
+beav.complete <- na.exclude(beav)
+dim(beav.complete)
+```
+
+We may also combine different criteria for indexing, based on the combination of different columns. Remember to always match the symbolism used to the dimensions of your object!
+```{r eval=TRUE}
+#males.sp1 <- beav[beav$sex=="M" & beav$sp=="sp1"] # This throws an error
+males.sp1 <- beav[beav$sex=="M" & beav$sp=="sp1",]
+str(males.sp1)				# Careful with unused factor levels
+males.sp1$sex
+levels(males.sp1$sex)
+males.sp1$sex <- droplevels(males.sp1$sex)
+levels(males.sp1$sex)
+```
+
+## **LISTS**
+Lists are dimensionless, as they incude different pieces of any type. 
+They are indexed using double straight brakets [[]] or the dollar sign (if named)
+```{r eval=TRUE}
+ls1 <- list(arr1, beav, beav.complete, sex, mat1)
+names(ls1) <- c("arr1", "beavers", "beavers.complete", "sex", "mat1")
+
+ls1[[4]]
+ls1$beavers
+```
+
+## **SEQUENTIAL INDEXING**
+For any object with more than two dimensions, one can also use sequential indexing on the different dimensions or elements (in the case of lists). Again, remember that you have to accurately match the indexing structure to the dimensions of the object being indexed (which in this case is NOT the initial one, but the result of the first level of indexing).
+```{r eval=TRUE}
+beav$sex[which(beav$sp=="sp1")]
+ls1[["arr1"]][,"F",]
+```

@@ -1,0 +1,393 @@
+---
+title: "Introduction to R: Vectors, matrices and arrays"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso"
+date: "4-8 November 2019"
+output: html_document
+---
+
+## **Content Description**
+
+This lecture focuses on three of the main R data types: vectors, matrices and arrays. These are R data objects with specific properties and with a direct link to algebraic operations. In most cases they will be numerical, but they can also be of character or logical class. All of them are restricted to a single class of elements, i.e. being exclusively numeric or coersed to character if different classes are introduced.
+
+## **VECTORS**
+A vector is a simple array (one dimmension) of numbers or characters, such as the measurements of a single variable
+A vector is a sequence of data elements of the same basic class
+A vector is defined by its mode and length
+
+We already saw yesterday how the combine function can be used to create vectors.
+```{r eval=TRUE}
+# a numeric vector
+x <- c(20, 50, 100)  
+x
+
+# a logical vector
+x <- c(TRUE, FALSE, TRUE, FALSE, FALSE)
+x
+
+# a vector of characters
+x <- c("GG","TT","GA","AT","CC")
+x
+
+```
+
+Note that a vector cannot mix different types of elements. In doing so, numbers are coerced to characters to maintain the same type of elements.
+```{r eval=TRUE}
+x <- c(2,3,5)
+y <- c("a", "b", "c")
+z <- c(x,y)
+z
+
+class(x)
+class(y)
+class(z)
+```
+
+A vector can be defined by its mode() and its lenght()
+```{r eval=FALSE}
+mode(x)
+length(x)
+```
+
+## **CREATING VECTORS**
+
+There are several functions in R for creating specific types of vectors, i.e. by drawing random numbers from a distribution, by repeating elements, or through sequences. 
+
+# **Sequences**
+
+```{r eval=TRUE}
+x <- 1:20
+x
+
+1:20-1  
+1:(20-1)
+
+?seq
+seq(from=1, to=20, by=1)
+seq(0, 10, 0.1)
+seq(length=9, from=1, to=5)
+seq(from=1, to=5, length=9)
+
+?sequence
+sequence(5)
+sequence(3:5)
+```
+
+# **Repeat**
+
+```{r eval=TRUE}
+?rep
+rep(1, 50)
+rep(1:4, 2)
+rep(1:4, each=2) 
+rep(1:4, c(2,4, 5, 3))
+rep(1:4, each=2, times=10)
+```
+
+This also works with characters, and using other vectors
+```{r eval=TRUE}
+y <- c("a", "b", "c")
+r <- rep(y,3)  
+```
+
+# **Random numbers**
+We can draw random numbers from an already existing vector. This is very useful for e.g. data suffling during permutation procedures.
+```{r eval=TRUE}
+?sample
+x <- sample(1:5, 5, replace=F)
+x
+#y <- sample(1:5, 6, replace=F) does not work
+y <- sample(1:5, 6, replace=T)
+y
+duplicated(y)
+sample(r, 20, replace = T)
+```
+
+We can also draw random numbers from specific statistical distributions.
+```{r eval=TRUE}
+?runif
+x <- runif(10)
+x
+x <- runif(1000)
+hist(x)
+
+x2 <- runif(100, min=0, max=500)
+hist(x2)
+
+?rnorm
+rnorm(10)
+x <- rnorm(100, mean=25, sd=2)  
+hist(x)
+
+?rpois
+?rexp
+?Distributions
+```
+
+# **The seed**
+**VERY important** for randomized sampling proceedures
+The seed is a position in a numbers matrix that R uses to start its algorithms of randomized sampling functions. By setting the seed, we can control the generation of random numbers. This becomes important when e.g. wanting to replicate exactly a randomization experiment or when wanting to make sure that *different* random samples are drawn from a distribution.
+```{r eval=TRUE}
+??set.seed
+
+rnorm(100)
+rnorm(100)
+
+set.seed(123)
+x <- rnorm(100)
+x
+set.seed(123)
+y <- rnorm(100)
+y
+```
+
+# **Naming vectors**
+The elements of a vector can be named. This is useful for data organization and inndexing.
+```{r eval=TRUE}
+size1 <- c(20, 50, 100, 25 , 5, 20)
+size1
+country <- c("Portugal", "Spain", "France", "Italy", "Denmark", "Finland")
+
+names(size1) <- country
+size1
+```
+
+## **OPERATIONS WITH VECTORS**
+Operations with vectors are conducted elementwise.
+```{r eval=TRUE}
+a <- c(10, 30, 50, 70, 25)
+5 + a
+5 * a
+a / 5
+
+b <- seq(5, 25, by=5)
+c <- a + b
+a
+b
+c
+```
+
+# **Recycling**
+When two vectors are of unequal length, the shorter one will be recycled in order to match the longer vector
+```{r eval=TRUE}
+d <- c(20, 5)
+a - d
+a * d
+```
+
+**VERY IMPORTANT:** READ WARNINGS AND ERRORS!!!
+But be careful, because the warning is **only** shown if the vectors are  *fractionally* recycled:
+```{r eval=TRUE}
+length(a)
+length(d)
+
+rep(a, 2) - d
+```
+
+# **Comparing vectors**
+R uses specific symbology that allows us to compare vectors, again in an elemntwise manner.
+```{r eval=TRUE}
+size1 <- c(20, 50, 100, 25, 5, 20)
+size2 <- c(12, 15, 10, 5, 5, 15)
+
+size1 == size2
+size1 > size2
+size2 <= size1
+size1%in%size2
+
+any(size1 > size2)
+all(size1 > size2)
+```
+
+## **VECTOR POSITIONS**
+Remember: a vector is an object with one dimension.
+Elements of the vector can be retrieved based on their (uni-dimensional) position in the vector using straight brackets.
+```{r eval=TRUE}
+size1[1]
+size2[5]
+size2[-1]      
+```
+
+More on this tommorow, when we discuss indexing.
+
+## **MATRICES**
+A matrix is a two-dimensional array (two dimmensions) of values
+A matrix is a collection of vectors (e.g. measurements of several variables for the same objects)
+A matrix can only contain data of the same type, as is the case for vectors
+
+Let's define three vectors:
+V1 containing numbers form 1 to 5
+V2 containing numbers form 100 to 108 with a step of 2
+V3 containing the number 50 five times
+```{r eval=TRUE}
+V1 <- c(1:5)
+V2 <- seq(100, 108, 2)
+V3 <- rep(50, 5)
+```
+
+# **Creating matrices**
+Two major functions for creating matrices are cbind() and rbind(), which allow us to bind together vectors (or matrices) by columns or by rows.
+```{r eval=TRUE}
+cbind(V1, V2, V3)
+rbind(V1, V2, V3)
+```
+
+This works because the three vectors have the same length, but if that were not the case R would apply *recycling* to bind the vectors.
+```{r eval=TRUE}
+V4 <- 10:16
+rbind(V1, V4)
+```
+
+Again, be careful, because the warning is shown only if the vectors are  *fractionally* recycled:
+```{r eval=TRUE}
+V5 <- 1:3
+V6 <- 1:6
+rbind(V5,V6)
+```
+
+Most usually, matrices are created using the **matrix()** function:
+```{r eval=TRUE}
+matrix(nrow=3, ncol=5)
+matrix(0, nrow=3, ncol=5)
+matrix(1:15, nrow=3, ncol=5)
+matrix(c(1:15), nrow=3)
+```
+
+But *careful*, to define a matrix, you need to define its dimensions! If not, a one-column matrix is assumed (which is not the same as a vector).
+```{r eval=TRUE}
+poo <- matrix(c(1:15))
+poo
+c(1:15)
+```
+
+The argument *byrow* allows us to control in which direction the matrix will be filled.
+```{r eval=TRUE}
+matrix(1:15, nrow=3, ncol=5, byrow=TRUE)
+```
+
+Again, careful with matrix dimensions and treaming or recycling warning messages.
+```{r eval=TRUE}
+matrix(1:17, nrow=3, ncol=5)
+matrix(1:17, nrow=3)
+```
+
+## **Naming matrices**
+Same as for vectors, the positions of matrices can be named, in this case through row and column names.
+```{r eval=TRUE}
+mat1 <- rbind(V1,V2,V3)
+mat2 <- cbind(V1,V2,V3)
+
+mat1
+mat2
+
+rownames(mat1)
+rownames(mat2)
+colnames(mat2)
+dimnames(mat1)
+
+rownames(mat2) <- country[-6]
+dimnames(mat2)
+mat2
+```
+
+## **EXERCISE:**
+Create a matrix with 5 rows and 4 columns containing data from an RNA expression experiment.
+Create random data to fill it in
+Rows are four treatments and columns are number of reads for different genes.
+```{r eval=TRUE}
+my.exp <- matrix(sample(1:1000,20), nrow=5, ncol=4)
+rownames(my.exp) <- paste("Treatment", 1:5, sep="")
+colnames(my.exp) <- paste("Gene", 1:4, sep="")
+```
+
+# **Matrix positions**
+Matrices have two dimensions: rows and columns. As such, their positions are defined based on the coordinates for these two dimensions
+```{r eval=TRUE}
+dim(mat2)
+mat2
+
+mat2[3, 2]
+mat2["France", "V2"]
+```
+
+# **Operations with matrices**
+Also work elementwise
+```{r eval=TRUE}
+mat1
+mat1 + 4
+mat1 * 10
+# mat1 + mat2 doesn´t work because matrices do not have the same dimensions
+```
+
+Matrices can also be transposed:
+```{r eval=TRUE}
+t(mat2)
+mat1 + t(mat2)
+```
+
+One can also perform summary operations **by rows or by columns** of a matrix:
+```{r eval=TRUE}
+colSums(mat1)
+rowSums(mat1)
+colMeans(mat1)
+rowMeans(mat1)
+```
+
+A more general function that allows us to do this - and many many other things - is **apply()**. Apply uses the *margin* argument to define if operations are done by rows (margin = 1) or by columns (margin = 2)
+```{r eval=TRUE}
+apply(mat1, 1, sum)
+apply(mat1, 2, sum)
+```
+
+Using **apply()** one can apply (pun intended) any function by rows or columns
+```{r eval=TRUE}
+apply(mat1, 1, max)
+apply(mat1, 2, mean)
+```
+
+**NOTE:** apply() is member of a family of functions that also includes:
+ - tapply() for applying a function to an array by a grouping factor
+ - lapply() and sapply() for applying a function to parts of a list (see next lecture)
+All these functions are EXTREMELY useful when an operation needs to be repeated across elements of a matrix, array or list. Their use and behaviour is a bit complex to cover in this course, but keep them in mind whenever you are trying to apply a function to specific margins of your data.
+
+## **ARRAYS**
+An array is a three-dimensional object (three dimmension) of numbers or characters
+An array is a collection of matrices (e.g. measurements of several variables for the same objects, across treatments)
+An array can only contain data of the same type
+```{r eval=TRUE}
+ARR <- array(1:12, dim=c(2,3,2))
+ARR
+
+dim(V1)
+dim(mat1)
+dim(ARR)
+```
+ 
+**EXERCISE:** Create an array of 3 matrices with 5 rows and 4 columns each containing data from an RNA expression experiment at different times. 
+Rows are four treatments and columns are number of reads for different genes, and the third dimension is time.
+
+```{r eval=TRUE}
+my.exp1 <- my.exp
+my.exp2 <- matrix(sample(1:1000, 20), nrow=5, ncol=4)
+my.exp3 <- matrix(sample(1:1000, 20), nrow=5, ncol=4)
+
+my.array <- array(c(my.exp1,my.exp2,my.exp3), dim=c(5,4,3))
+dimnames(my.array) <- list(paste("Treatment",1:5), paste("Gene",1:4), paste("Time",0:2))
+
+my.array
+str(my.array)
+dimnames(my.array)
+```
+
+**apply()** also works for any of the margins of an array:
+```{r eval=TRUE}
+apply(my.array, 2, mean)
+apply(my.array, 3, mean)
+apply(my.array, 1, mean)
+```
+
+We can also ask for a function to be applied on *TWO* margins of an array. In this case, the function returns a matrix, rather than a vector, of values.
+```{r eval=TRUE}
+apply(my.array, 1:2, mean)
+```
+
+

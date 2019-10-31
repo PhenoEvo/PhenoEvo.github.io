@@ -1,0 +1,34 @@
+---
+  title: "Schedule"
+---
+Course Schedule of Activities
+
+* Monday
+  1. What is R? Installation (R and R-studio), main structure, seeking help
+  2. Assignment, variable modes and operators
+  3. Functions, packages (and seeking more help)
+  4. Code style guidelines
+
+* Tuesday
+  1. Data types I: vectors, matrices and arrays
+  2. Data types II: data frames, lists, and other data types
+  3. Data import-export, workspaces and directories
+  4. Practical session: bring and load your own data
+
+* Wednesday
+  1. Data indexing
+  2. Reviewing and tabulating your data
+  3. String manipulation
+  4. Plotting
+  5. Practice session: plots, indexing and data review
+
+* Thursday
+  1. Control functions I: conditionals
+  2. Control functions II: loops
+  3. Practice session: control functions
+
+* Friday
+  1. Some advanced features: build your functions
+  2. Practice session: function writing
+  3. Showcase: statistical analysis of biological data
+  

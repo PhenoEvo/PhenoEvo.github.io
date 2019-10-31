@@ -1,0 +1,195 @@
+---
+title: "Introduction to R: Functions and Packages"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso"
+date: "4-8 November 2019"
+output: html_document
+---
+
+## **Content Description**
+
+The code below replicates the examples mentioned in today´s lecture, and gives some simple operations to start understanding how functions are built in R and how you can handle them.
+At the end, you have a practice "challenge" to try to solve. The solution is then provided.
+
+
+## **Some very basic operations (see also further on)**
+Let´s create three numerical objects. We might then want to calculate their mean value. If we are to do this in a step-by-step fashion, our code might look like this:
+
+```{r eval=TRUE}
+x <- 15
+y <- 23
+z <- 36
+sum.all <- x + y + z
+sum.div.3 <- sum.all/3
+sum.div.3
+```
+
+## **Making a function**
+
+If you are going to calculate means a lot, you may copy the above lines several times, but it is easier (and more elegant in terms of programming) to make a function that calculates the mean value of a sample. That could look like this:
+
+```{r eval=TRUE}
+sum.div.3 <- function(x, y, z) {
+  sum.all <- x + y + z
+  sum.d3 <- sum.all/3
+  return(sum.d3)
+}
+
+# You can now use the function to calculate the mean of any three numbers:
+sum.div.3(15, 23, 36)
+sum.div.3(25, 34, 47)
+```
+
+In the example above, x, y and z are the *arguments* of the function. These are the pieces of information the function requires from the user to be able to work.
+
+#### **Important detail!** Functions are specific R objects and they behave differently! Note that these lines provide different results:
+
+```{r eval=FALSE}
+sum.div.3
+sum.div.3()
+```
+
+## **Types of functions**
+
+R includes different types of functions. For basic (and not only!) operations, someone has probably already made a function that you can use. Many **built-in** functions are available, for instance, through the base and stats packages (see below for more information on packages), which are automatically included in your R installation.
+
+One such function, is available for calculating the mean value of any series of numerical vectors:
+```{r eval=TRUE}
+mean(15, 23, 36)
+mean(14, 32, 5, 47, 82)
+```
+
+One of the most commonly used functions creates a **vector**, which is a collection of numbers or characters (vectors can only handle a single type of elements). For example, we might want to create an object with the series of the values we are interested in above:
+
+```{r eval=TRUE}
+my.vector <- c(14, 32, 5, 47, 82)
+my.vector
+class(my.vector)
+```
+
+Vectors are collections of objects with one dimension (more on this tomorrow).
+This means that their elements can be identified based on their position, using a single coordinate. Thus, the third element of my.vector can be retrieved as such:
+
+```{r eval=TRUE}
+my.vector[3]
+```
+
+We can also use vectors to index other vectors. For instance, if I want elemengs three AND five of the above vector, I can retrieve them like this:
+
+```{r eval=TRUE}
+my.vector[c(3,5)]
+```
+
+Another type of functions are **primitive functions**. These are included in the base package, and they are very basic functions. They operate a bit differently from other functions. For example:
+```{r eval=TRUE}
+sum(c(15, 23, 26))
+sum
+```
+
+Many (many, many!) other **functions are included in R-packages**. Recall that packages are collections of functions, usually built to address a specific family of analyses. They are built and maintained by R contributors, so always beware of confirming how they work and verify that you understand what they do.  
+
+One example is the vegan R-package, which includes many functions for the analysis of ecological community data (among other things). Recall that you first need to install a package (once) to be able to use it
+```{r eval=FALSE}
+install.packages("vegan")
+```
+
+Then, each time you start a session and you want to use a package, you need to load it. Once this is done, the functions included in the package become available. If you just type their name, you can see (in most cases, i.e. if not hidden by the contributor) the code that constitutes the function.
+```{r eval=TRUE}
+library(vegan)
+adonis
+```
+
+In addition to functions for performing specific analytical operations, there are some very useful **informative functions** that provide information on objects, your workspace, or system etc. For instance:
+
+    
+```{r eval=TRUE}
+  # Information about objects
+x <- rnorm(100)
+class(x)
+str(x)
+names(x)
+```
+
+```{r eval=FALSE}
+  # Information about your workspace or system
+getwd()
+ls()
+list.files()
+
+```
+
+
+## **Nesting functions**
+While at the beginning it is easier to use one line of code for each operation, with time it becomes more elegant and confortable to condense your code by *nesting* simple functions, i.e. by using a function as an argument passed to another function. For example:
+
+```{r eval=TRUE}
+my.vec <- sample(1:100, 20)
+my.vec
+mean(my.vec)
+```
+
+Can be condensend to:
+```{r eval=TRUE}
+mean(sample(1:100, 20))
+```
+
+#### **Note** that here the results of the two versions are different because *sample* is a random-number generator, that produces different vectors each time it is run.
+
+## **Getting help**
+Consulting function and package manuals is one of the most **essential tools** in R! If you are only going to remember one thing about how to work in R, make that be the way to seek help! Before using any function, it is **essential** that you first read its help file, to learn what it does, which arguments it needs, what are the default values (if any) of arguments, and what result it is expected to produce. 
+
+ - If you know exactly the name of the function you are interested in, you can access its help page by:
+
+```{r eval=TRUE}
+?mean
+```
+
+ - If you are not sure about the name of the function, but have some idea of what you want to do, you can perform a fuzzy-matching search of keywords:
+
+```{r eval=TRUE}
+??mean
+```
+
+ - To obtain information about a whole package, and a list of the functions it includes, you can type: 
+
+
+```{r eval=TRUE}
+?vegan
+```
+#### **CAREFUL!** the package needs to be installed and loaded for this to work!
+
+
+## **PRACTICE CHALLENGE**
+Try to put your skills into test by building a series of commands to perform the following operations:
+ - take logarithms of my.vec
+ - calculate the mean of these logarithms
+ - repeat those values 20 times and put them in a new vector
+ - calculate the difference between the log of the values and the vector with means
+
+
+
+
+
+## **PRACTICE CHALLENGE - solution**
+
+```{r eval=TRUE}
+# - take logarithms of my.vec
+my.vec.log <- log(my.vec)
+my.vec.log
+
+# - calculate the mean of these logarithms
+my.log.mean <- mean(my.vec.log)
+my.log.mean
+
+# - repeat those values 20 times and put them in a new vector
+my.mean.rep <- rep(my.log.mean, 20)
+my.mean.rep
+
+# - calculate the difference between the log of the values and the vector with means
+my.cntr.vec <- my.vec.log - my.mean.rep
+my.cntr.vec
+
+# The same thing in one line
+log(my.vec) - rep(mean(log(my.vec)), 20)
+```
+
+
