@@ -2,51 +2,51 @@
   title: "Lectures"
 ---
 
-[1.1. What is R? Installation (R and R-studio), main structure, seeking help](https://PhenEvol.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
+[1.1. What is R? Installation (R and R-studio), main structure, seeking help](https://PhenoEvo.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
 
-[1.2. Assignment, variable modes and operators](https://PhenEvol.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
+[1.2. Assignment, variable modes and operators](https://PhenoEvo.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
 
-[1.3. Functions, packages (and seeking more help)](https://PhenEvol.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
+[1.3. Functions, packages (and seeking more help)](https://PhenoEvo.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
 
-[1.4. Code style guidelines](https://PhenEvol.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
-
-
-
-[2.1. Data types I: vectors, matrices and arrays](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
-
-[2.2. Data types II: data frames, lists, and other data types](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
-
-[2.3. Data import-export, workspaces and directories](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
-
-[2.4. Practical session: bring and load your own data](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[1.4. Code style guidelines](https://PhenoEvo.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
 
 
 
-[3.1. Data indexing](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[2.1. Data types I: vectors, matrices and arrays](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[3.2. Reviewing and tabulating your data](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[2.2. Data types II: data frames, lists, and other data types](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[3.3. String manipulation](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[2.3. Data import-export, workspaces and directories](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[3.4. Plotting](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
-
-[3.5. Practice session: plots, indexing and data review](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[2.4. Practical session: bring and load your own data](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
 
 
-[4.1. Control functions I: conditionals](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[3.1. Data indexing](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[4.2. Control functions II: loops](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[3.2. Reviewing and tabulating your data](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[4.3. Practice session: control functions](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[3.3. String manipulation](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+
+[3.4. Plotting](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+
+[3.5. Practice session: plots, indexing and data review](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
 
 
-[5.1. Some advanced features: build your functions](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[4.1. Control functions I: conditionals](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[5.2. Practice session: function writing](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[4.2. Control functions II: loops](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[5.3. Showcase: statistical analysis of biological data](https://PhenEvol.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[4.3. Practice session: control functions](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+
+
+
+[5.1. Some advanced features: build your functions](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+
+[5.2. Practice session: function writing](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+
+[5.3. Showcase: statistical analysis of biological data](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
  
 

@@ -1,0 +1,8 @@
+---
+  title: "Schedule"
+---
+Example data files used in the course
+
+[beavers.txt](https://PhenoEvo.github.io/Intro2R/data/beavers.txt)
+
+
