@@ -7,7 +7,7 @@ output: html_document
 
 ## **Content Description**
 
-Change this:
+Change!
 
 This lecture focuses on three of the main R data types: vectors, matrices and arrays. These are R data objects with specific properties and with a direct link to algebraic operations. In most cases they will be numerical, but they can also be of character or logical class. All of them are restricted to a single class of elements, i.e. being exclusively numeric or coersed to character if different classes are introduced.
 
