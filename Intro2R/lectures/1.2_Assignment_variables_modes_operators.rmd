@@ -1,0 +1,479 @@
+---
+title: "Assignment, variable modes and operators"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso"
+date: "4-8 November 2019"
+output: html_document
+---
+
+## **Content Description**
+
+Change this:
+
+This lecture focuses on three of the main R data types: vectors, matrices and arrays. These are R data objects with specific properties and with a direct link to algebraic operations. In most cases they will be numerical, but they can also be of character or logical class. All of them are restricted to a single class of elements, i.e. being exclusively numeric or coersed to character if different classes are introduced.
+
+## **Objects**
+
+Something you are working with in R. In fact, everything in R is an object. An object is a data structure having some attributes and methods which act on its attributes. 
+
+For example:
+
+```{r}
+pi
+```
+
+As in calculators, you may store some numbers in memory. You may give names to those objects, always starting with a letter!
+
+```{r}
+side=3
+side
+```
+
+
+R is case-sensitive for object names
+
+```{r}
+Side=8
+side
+Side
+```
+
+And names always must begin with a letter. The following chunk of code will not work (you can try it yourself):
+
+```{r, eval=F}
+1side=1
+```
+
+Remeber that giving a new value to an already created object will remove the previous one:
+
+```{r}
+Side=5
+Side
+```
+
+You may now make calculations involving objects stored in memory. Calculate the area of the square:
+
+```{r}
+side*side
+```
+
+Doing that we are seeing the result, but we are not storing in memory. For that, we must create an object:
+
+```{r}
+area=side*side
+```
+
+## **Assignments**
+
+Objects can be defined using the "=" symbol
+
+```{r}
+side1=3
+side2=4
+```
+
+Imagine that you want both sides to be equal to 3:
+
+```{r}
+side1=side2
+```
+
+However, the usual symbol make assignments is an arrow ('->' or '<-')
+
+```{r}
+side1<-3
+side2<-4
+side1->side2
+```
+
+... but be careful with arrows! Here you will mean quite different things.
+
+```{r, eval=F}
+a<-3
+a<5
+a-5
+a< -5
+a<(-5)
+a<-5
+```
+
+Try using parentheses if you are not sure on the input meaning. Imagine you want 8 divided by 4 times 2 and summing 1 to that result:
+
+```{r}
+f1<-1+8/4*2
+f2<-1+8/(4*2)
+f3<-(1+8)/4*2
+
+f1
+f2
+f3
+```
+
+Appart from that, R is quite flexible accepting inputs...
+
+```{r}
+3*-3
+3 * -3
+3* -3
+3*- 3
+```
+
+
+## **Modes, Classes, and Operators**
+
+All the objects we have defined until now are numbers...
+
+```{r}
+ls()
+```
+
+and belong to the "numeric class". You can get information on mode, class and storage as follows:
+
+```{r}
+mode(f1)	# determines the mode (object structure)
+class(f1)	# determines the class (object interaction with functions)
+typeof(f1)  # determines the R internal type of storage for the object
+str(f1)		# provides the internal structure (more like a summary)
+```
+
+Or you can ask R about specific classes:
+
+```{r}
+is.numeric(f1)
+is.double(f1)
+```
+
+
+To interact with data stored in memory, R provides different specialized data structures called "objects" that are referred to and manipulated through symbols or variables. There are different hierarchical types depending on the structure, interaction with functions and storage:
+
+*MODE* = object structure
+
+*CLASS* = object interaction with functions
+
+*TYPE* = R internal of storage for the object
+
+### **Modes** (basic structure)
+
+* ATOMIC objects
+    * "numeric"
+    * "complex"
+    * "character" or "string"
+    * "logical"
+    * "raw"
+* RECURSIVE objects
+    * "list"
+    * "function"
+    * (...)
+
+### **Classes** (interaction with functions)
+* BASIC 
+    * "character"
+    * "complex"
+    * "double"
+    * "expression"
+    * "integer"
+    * "list"
+    * "logical"
+    * "numeric"
+    * "single"
+    * "raw"
+    * "NULL"
+    * "function"
+    * "externalptr"
+    * "ANY"
+    * "VIRTUAL"
+    * "missing"
+    * "namedList"
+* VIRTUAL (extended by all the above)
+    * "vector"
+    * "S4"
+    * "language"
+        * "function"
+        * "call"
+
+#### MODE NUMERIC 
+
+Are "numbers" and accept the following arithmentic operations:
+
+* Arithmetic Operators
+    * `+`	addition
+    * `-`	subtraction
+    + `*`	multiplication
+    * `/`	division
+    + `^` or `**`	exponentiation
+    * `%%`	modulus (remainder after division): `5%%2` is 1
+    * `%/%` integer division: `5%/%2 is 2
+
+Thus, you may use R as a calculator
+
+```{r}
+f1<-3*(2-1)
+```
+
+And belong to the "numeric class". You can get information on mode, class and storage as follows:
+
+```{r}
+mode(f1)	# determines the mode (object structure)
+class(f1)	# determines the class (object interaction with functions)
+typeof(f1)  # determines the R internal type of storage for the object
+str(f1)		# provides the internal structure[class] (more like a summary) 
+```
+
+There are multiple classes that are grouped together as "numeric" modes, the 2 most common of which are double (for double precision floating point numbers) and integer.
+
+
+##### TYPE DOUBLE (CLASS NUMERIC)
+
+Equivalent of a C "double". A simple way of representing any numeric value is using two numbers in a way similar to the scientific notation:
+    `significant*base^exponent`
+
+Thus, 12.345 is `12345*10^(-3)` and because base is common for all numers in a given computer only two numbers are required (12345 and -3), i.e. "double".
+
+
+##### TYPE INTEGER (CLASS INTEGER)
+
+If the numeric value has no decimal part, it can be stored as "integer". The exponent is 0 for integers, so it is not neccessary to be stored and requires less space in memory. However, all numbers are stored as double by default, even if they are integer values:
+
+You can ask R about specific classes:
+
+```{r}
+is.numeric(f1)
+is.double(f1)
+```
+
+R will automatically convert between the numeric classes when needed, so you will not be worried about if the number 3 is currently stored as an integer or as a double. Most maths is done using double precision, so "double" is the default storage.
+
+However, if you want to specifically store a numeric as integer you can do it:
+
+```{r}
+f2<-as.integer(f1)
+mode(f2)	# determines the mode (object structure)
+class(f2)	# determines the class (object interaction with functions)
+typeof(f2)  # determines the R internal type of storage for the object
+str(f2)		# provides the internal structure[class] (more like a summary) 
+```
+
+It looks the same for you, but it is different for R:
+
+```{r}
+is.integer(f1)
+is.integer(f2)
+mode(f1)
+mode(f2)
+class(f1)
+class(f2)
+```
+
+Forcing doble/integer types is useful if you call some C or Fortran codes. For a more conventional use, you will not require controling storage options.
+
+#### MODE CHARACTER (STRINGS)
+
+R can also work using letters instead of numbers.
+
+Let's create an object containing the letter "B"
+
+```{r, eval=F}
+letterB<-B # this line of code does not work. Try yourself!
+```
+
+It doesn't work because R is looking for an object in memory stored with the symbol B. Because it doesn't exists, it yields an error. To create a character (or string) it must be defined within quotes (" or ').
+
+```{r}
+letterB<-"B"
+letterB
+```
+
+In that case, R will not try to look for B in memory, but provides exactly what you typed within quotes.
+
+```{r}
+sentence1<-"This R session bores me! @#%&!!"
+sentence1
+
+str(sentence1)
+mode(sentence1)	# determines the mode (object structure)
+class(sentence1)	# determines the class (object interaction with functions)
+typeof(sentence1)  # determines the R internal type of storage for the object
+```
+
+There are few 'special strings':
+
+```{r}
+LETTERS # Provides uppercase letters
+letters # Provides lowercase letters
+month.name # Provides months
+month.abb # Provides months in short
+```
+
+You can also store a number as a character:
+
+```{r}
+letter3<-"3"
+number3<-3
+```
+
+They are different classes...
+
+```{r}
+class(letter3)
+class(number3)
+```
+
+...and accept different functions:
+
+```{r}
+number3*3
+```
+
+```{r, eval=F}
+letter3*3 # this line of code does not work. Try yourself!
+```
+
+#### MODE LOGICAL
+
+Are objects that can be expressed in terms of `TRUE` or `FALSE` (`T` and `F` are also accepted). As occurs with numerics, they have specific operators to perform operations:
+
+* Logical Operators:
+    * `<` 	less than
+    * `<=` 	less than or equal to
+    * `>` 	greater than
+    * `>=` 	greater than or equal to
+    * `==` 	exactly equal to
+    * `!=` 	not equal to
+    * `!x` 	Not x  (e.g., `!TRUE` is `FALSE`)
+    * `x | y` 	x OR y
+    * `x & y` 	x AND y
+
+**Important! One `=` to define, two `= to compare!!!**
+
+```{r}
+f1==2
+f1=2
+```
+
+A logical object
+
+```{r}
+l1 <- f1==2
+mode(l1)	# determines the mode (object structure)
+class(l1)	# determines the class (object interaction with functions)
+typeof(l1)  # determines the R internal type of storage for the object
+str(l1)		# provides the internal structure (more like a summary)
+```
+
+Some examples of operations
+
+```{r}
+f1>f2
+f1>100
+"1"!=1
+double(1.0) == 1
+!TRUE
+6<=3
+45>40
+6<=3|45>40
+3<=6&45>40
+```
+
+
+#### CLASS FACTOR (MODE NUMERIC)
+
+Factors are used to describe items that can have a finite number of discrete values or categories (gender, country, month,...) called "levels".
+
+```{r}
+factor3<-factor(3)
+factor3*3
+is.numeric(factor3)
+str(factor3)
+mode(factor3)	# determines the mode (object structure)
+class(factor3)	# determines the class (object interaction with functions)
+typeof(factor3)  # determines the R internal type of storage for the object
+
+factorB<-factor("B")
+str(factorB)
+mode(factorB)	# determines the mode (object structure)
+class(factorB)	# determines the class (object interaction with functions)
+typeof(factorB)  # determines the R internal type of storage for the object
+```
+
+A factor is always of numeric mode!!
+
+
+#### MODE COMPLEX
+
+```{r}
+comp1<-2+3i
+str(comp1)
+mode(comp1)	# determines the mode (object structure)
+class(comp1)	# determines the class (object interaction with functions)
+typeof(comp1)  # determines the R internal type of storage for the object
+is.numeric(comp1)
+is.complex(comp1)
+```
+
+There are other "special" letters:
+
+```{r}
+pi # (we will see another below, letters, months...)
+```
+
+```{r, eval=F}
+e # that is not the Euler's number. For 2.7182... you must:
+```
+```{r}
+exp(1)
+```
+
+Let's define some complex numbers using these values
+
+```{r}
+complex1<-pi+3i
+```
+```{r, eval=F}
+complex2<-3+pii # It doesn't work because R is looking for an object called "pii"
+```
+
+In that case you should use the "complex" function:
+
+```{r}
+complex2<-complex(real=3,imaginary=pi)
+# Use the help! '?complex'
+```
+
+Let's make the Euler identity. $e ^ {(i*pi)} - 1 = 0$
+
+```{r}
+exp(complex(real=0,imaginary=pi))+1
+```
+
+And you will not get 0 but a very very small number. The reason is that computers works in binary. The only numbers that can be represented exactly in R’s numeric type are integers and fractions whose denominator is a power of 2. Other numbers have to be rounded to (typically) 53 binary digits accuracy. As a result, two floating point numbers will not reliably be equal unless they have been computed by the same algorithm, and not always even then. http://blog.revolutionanalytics.com/2009/03/when-is-a-zero-not-a-zero.html
+
+```{r}
+a <- sqrt(2)
+a*a==2
+```
+
+To solve this problem yo can ask for comparing two values
+
+```{r}
+all.equal(a*a,2)
+```
+
+Sometimes, though, these errors accumulate:
+
+```{r}
+j <- 0.1
+x<-j+j+j+j+j+j+j+j+j+j
+x-1
+```
+
+
+#### Converting between classes
+
+```{r, eval=F}
+as.xx()
+```
+
+
+#### NA and NaN
+
+In R, missing values are represented by the symbol NA (not available). Impossible values (e.g., dividing by zero) are represented by the symbol NaN (not a number)
+
