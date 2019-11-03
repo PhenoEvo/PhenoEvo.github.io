@@ -193,8 +193,7 @@ $(document).ready(function () {
 
 <div id="content-description" class="section level2">
 <h2><strong>Content Description</strong></h2>
-<p>Change this:</p>
-<p>This lecture focuses on three of the main R data types: vectors, matrices and arrays. These are R data objects with specific properties and with a direct link to algebraic operations. In most cases they will be numerical, but they can also be of character or logical class. All of them are restricted to a single class of elements, i.e. being exclusively numeric or coersed to character if different classes are introduced.</p>
+<p>R is a object-oriented programming language. Thus, in this lecture we will focus on its basic elements, i.e. objects. We will see how to create them, the different types, modes or classes, and how to operate with them.</p>
 </div>
 <div id="objects" class="section level2">
 <h2><strong>Objects</strong></h2>
@@ -226,12 +225,12 @@ Side</code></pre>
 </div>
 <div id="assignments" class="section level2">
 <h2><strong>Assignments</strong></h2>
-<p>Objects can be defined using the “=” symbol</p>
+<p>Objects can be defined using the <code>=</code> symbol</p>
 <pre class="r"><code>side1=3
 side2=4</code></pre>
 <p>Imagine that you want both sides to be equal to 3:</p>
 <pre class="r"><code>side1=side2</code></pre>
-<p>However, the usual symbol make assignments is an arrow (‘-&gt;’ or ‘&lt;-’)</p>
+<p>However, the usual symbol make assignments is an arrow (<code>-&gt;</code> or <code>&lt;-</code>)</p>
 <pre class="r"><code>side1&lt;-3
 side2&lt;-4
 side1-&gt;side2</code></pre>
@@ -411,7 +410,7 @@ mode(f2)    # determines the mode (object structure)</code></pre>
 <p>R can also work using letters instead of numbers.</p>
 <p>Let’s create an object containing the letter “B”</p>
 <pre class="r"><code>letterB&lt;-B # this line of code does not work. Try yourself!</code></pre>
-<p>It doesn’t work because R is looking for an object in memory stored with the symbol B. Because it doesn’t exists, it yields an error. To create a character (or string) it must be defined within quotes (&quot; or ’).</p>
+<p>It doesn’t work because R is looking for an object in memory stored with the symbol B. Because it doesn’t exists, it yields an error. To create a character (or string) it must be defined within quotes (<code>&quot;</code> or <code>'</code>).</p>
 <pre class="r"><code>letterB&lt;-&quot;B&quot;
 letterB</code></pre>
 <pre><code>## [1] &quot;B&quot;</code></pre>

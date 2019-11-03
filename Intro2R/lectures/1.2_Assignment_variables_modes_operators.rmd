@@ -7,9 +7,7 @@ output: html_document
 
 ## **Content Description**
 
-Change!
-
-This lecture focuses on three of the main R data types: vectors, matrices and arrays. These are R data objects with specific properties and with a direct link to algebraic operations. In most cases they will be numerical, but they can also be of character or logical class. All of them are restricted to a single class of elements, i.e. being exclusively numeric or coersed to character if different classes are introduced.
+R is a object-oriented programming language. Thus, in this lecture we will focus on its basic elements, i.e. objects. We will see how to create them, the different types, modes or classes, and how to operate with them.
 
 ## **Objects**
 
@@ -64,7 +62,7 @@ area=side*side
 
 ## **Assignments**
 
-Objects can be defined using the "=" symbol
+Objects can be defined using the `=` symbol
 
 ```{r}
 side1=3
@@ -77,7 +75,7 @@ Imagine that you want both sides to be equal to 3:
 side1=side2
 ```
 
-However, the usual symbol make assignments is an arrow ('->' or '<-')
+However, the usual symbol make assignments is an arrow (`->` or `<-`)
 
 ```{r}
 side1<-3
@@ -275,7 +273,7 @@ Let's create an object containing the letter "B"
 letterB<-B # this line of code does not work. Try yourself!
 ```
 
-It doesn't work because R is looking for an object in memory stored with the symbol B. Because it doesn't exists, it yields an error. To create a character (or string) it must be defined within quotes (" or ').
+It doesn't work because R is looking for an object in memory stored with the symbol B. Because it doesn't exists, it yields an error. To create a character (or string) it must be defined within quotes (`"` or `'`).
 
 ```{r}
 letterB<-"B"
