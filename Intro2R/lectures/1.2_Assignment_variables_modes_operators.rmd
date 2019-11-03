@@ -340,7 +340,7 @@ Are objects that can be expressed in terms of `TRUE` or `FALSE` (`T` and `F` are
     * `x | y` 	x OR y
     * `x & y` 	x AND y
 
-**Important! One `=` to define, two `= to compare!!!**
+**Important! One `=` to define, two `=` to compare!!!**
 
 ```{r}
 f1==2
