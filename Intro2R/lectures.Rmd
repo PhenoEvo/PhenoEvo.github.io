@@ -4,7 +4,7 @@
 
 [1.1. What is R? Installation (R and R-studio), main structure, seeking help](https://PhenoEvo.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
 
-[1.2. Assignment, variable modes and operators](https://PhenoEvo.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
+[1.2. Assignment, variable modes and operators](https://PhenoEvo.github.io/Intro2R/lectures/1.2_Assignment_variables_modes_operators.html)
 
 [1.3. Functions, packages (and seeking more help)](https://PhenoEvo.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
 
