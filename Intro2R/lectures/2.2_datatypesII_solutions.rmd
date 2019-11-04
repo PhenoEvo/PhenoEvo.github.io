@@ -1,0 +1,92 @@
+---
+title: "Data types II: dataframes, lists, and other data types"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
+date: "4-8 November 2019"
+output: html_document
+---
+
+
+```{r, eval=FALSE, error=TRUE, echo=FALSE}
+# Hidden code to have values to provide solutions
+vec1 <- c(1, 2, 3, 4, 5)
+vec3 <- rnorm(5)
+vec5 <- c("male", "male", "female", "female", "female")
+df1 <- data.frame(vec1, vec3, vec5)
+```
+
+
+## **Solutions to 2.2**
+
+1. Row names must be unique becuase they must identify a single linw. CB112 is 
+repeated.
+
+2. 
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+rownames(df1) <- paste("Sample", 1:5, sep="_")
+```
+
+3. It means that the column "F1" does not exist in the dataframe.
+
+4. The created column has lower case "f1". 
+
+5. The vector can only have one type of data. If multiple types are found, than
+the vector has the type that can hold all data. In this case, the character type
+is defined to the vector because of the "male" value. When doing rbind with this
+vector, we are coercing the whole table to the most simple type per column.
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+str(df2)
+```
+
+6. 
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+var1 <- rnorm(100)
+var2 <- paste("Sample", 1:100) 
+var3 <- as.factor(sample(c("male", "female"), 100, replace=TRUE))
+my.dataframe <- data.frame(var1, var2, var3)
+str(my.dataframe)
+
+```
+
+7. 
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+mean(my.dataframe[,1])
+```
+
+8. *my.list2* has named slots, while *my.list1* has only indices.
+
+9. The difference is on the class that is returned: *my.list[[5]]* returns the 
+dataframe while *my.list[5]* returns a **list** with one item that is the 
+dataframe.
+
+10. The problem here is that names are characters and we are creating a 
+confusion between the first item in a list (number 1) and the second item that
+is given the name "1" (character). 
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+my.list4[[1]]
+my.list4[[2]] 
+#or 
+my.list4[["1"]]
+```
+
+11. The *apply* did not work with dataframe because the dataframe if firstly 
+converted to matrix (*as.matrix(df1)*), and all elements will be coerced to the
+most simple type that hold all data, which is *character*. So the *mean* returns
+NAs. The list is not converted to a single type because each item in a list is
+treated individually.
+
+12. The dataframes are a list object with a class data.frame.
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+class(dt)
+mode(dt)
+typeof(dt)
+```
+
+
+
+
+

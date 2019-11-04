@@ -86,7 +86,7 @@ df1
 rownames(df1) <- c("CB232", "CB321", "CB112", "CB432", "CB112")
 ```
 1. Why does it throw an error?
-2. Give the names of 'vec5' to the row names
+2. Give a sequence of names like "Sample_1", "Sample_2" to dataframe rows.
 
 ---
 
@@ -199,7 +199,7 @@ colSums(df3)/nrow(df3)
 6. Create a dataframe with 100 rows and three columns: first numeric, second
 text and third factor. Use random generation to populate the dataframe.
 
-7. Get the mean of the mean of the columns where is possible to calculate.
+7. Get the mean of the columns where is possible to calculate a value.
 
 ---
 
