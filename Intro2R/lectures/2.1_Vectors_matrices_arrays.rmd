@@ -86,7 +86,7 @@ rep(1:4, each=2, times=10)
 This also works with characters, and using other vectors
 ```{r eval=TRUE}
 y <- c("a", "b", "c")
-r <- rep(y,3)  
+r <- rep(y, 3)  
 ```
 
 # **Random numbers**
