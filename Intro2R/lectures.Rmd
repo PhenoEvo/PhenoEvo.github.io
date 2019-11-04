@@ -14,7 +14,7 @@
 
 [2.1. Data types I: vectors, matrices and arrays](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[2.2. Data types II: data frames, lists, and other data types](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[2.2. Data types II: data frames, lists, and other data types](https://PhenoEvo.github.io/Intro2R/lectures/2.2_datatypesII.html)
 
 [2.3. Data import-export, workspaces and directories](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
