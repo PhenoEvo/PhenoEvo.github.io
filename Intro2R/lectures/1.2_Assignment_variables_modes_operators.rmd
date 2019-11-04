@@ -1,6 +1,6 @@
 ---
 title: "Introduction to R: Assignment, variable modes and operators"
-author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
 date: "4-8 November 2019"
 output: html_document
 ---
