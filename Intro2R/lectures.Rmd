@@ -6,7 +6,11 @@
 
 [1.2. Assignment, variable modes and operators](https://phenoevo.github.io/Intro2R/lectures/1.2_Assignment_variables_modes_operators.html)
 
-[1.3. Functions, packages (and seeking more help)](https://phenoevo.github.io/Intro2R/lectures/1.3_Functions and packages.pdf)
+1.3. Functions, packages (and seeking more help)
+
+  + [presentation](https://phenoevo.github.io/Intro2R/lectures/1.3_Functions and packages.pdf)
+  
+  + [R examples](https://phenoevo.github.io/Intro2R/lectures/1.3_Functions-and-packages.html)
 
 1.4. Code style guidelines
 
