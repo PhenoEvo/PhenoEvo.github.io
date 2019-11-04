@@ -36,7 +36,7 @@
 
 [4.1. Control functions I: conditionals](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[4.2. Control functions II: loops](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[4.2. Control functions II: loops](https://PhenoEvo.github.io/Intro2R/lectures/4.2_loops.html)
 
 [4.3. Practice session: control functions](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 

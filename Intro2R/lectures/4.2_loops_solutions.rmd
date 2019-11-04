@@ -1,0 +1,154 @@
+---
+title: "Data types II: dataframes, lists, and other data types"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
+date: "4-8 November 2019"
+output: html_document
+---
+
+```{r, eval=TRUE, error=TRUE, echo=FALSE}
+bumpus <- read.table("bumpus.txt", sep="\t", header=TRUE, stringsAsFactors=FALSE)
+```
+
+
+# **Solutions**
+
+1. Creating vector v2 with 1000 samples
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+v <- runif(1000, 1, 10)
+mean.val <- 0
+for (i in 1:length(v)) {
+    mean.val <- mean.val + v[i]
+}
+mean.val <- mean.val / length(v)
+mean.val
+```
+
+
+2. Loop over bumpus$sex instead
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+gender <- unique(bumpus$sex)
+results <- rep(NA, length(gender))
+
+counter <- 1
+for (sex in gender) {
+    HL <- bumpus[bumpus$sex == sex, "HL"]
+    results[counter] <- mean(HL)
+    counter <- counter + 1
+}
+```
+
+or even using the index instead of the counter:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+gender <- unique(bumpus$sex)
+results <- rep(NA, length(gender))
+
+for (i in 1:length(gender)) {
+    HL <- bumpus[bumpus$sex == gender[i], "HL"]
+    results[i] <- mean(HL)
+}
+
+names(results) <- gender
+
+```
+
+3. 
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+outdir <- "Output"
+for (run in 1:10) {
+    for (k in seq(0, 0.5, 0.05)) {
+        newdir <- file.path(outdir, paste("Run", run, sep=""), paste("k", k, sep=""))
+        dir.create(newdir, recursive=TRUE)
+    }
+}
+```
+
+4. The length is 51 because the iterations start at zero, so when iter > 50, we
+have 51.
+
+5. Either start at iteration 1 or use iter greater or equal to maxIter as condition.
+
+6. 
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+x <- rnorm(5)
+
+n <- length(x)
+sum <- 0
+i <- 1
+
+if (n > 0) {
+    while (i <= n) {
+        sum = sum + x[i]
+        i <- i + 1
+    }
+    A <- sum/n
+} else {
+    print("Error: vector is empty")
+}
+```
+an equivalent but simpler version would be:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+sum = 0
+if (n > 0) {
+    for (i in 1:n) {
+        sum = sum + x[i]
+    }
+    A <- sum/n
+} else {
+    print("Error: vector is empty")
+}
+
+```
+
+7. 
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+
+x <- rnorm(100)
+
+radius <- 3
+n <- length(x)
+ma <- rep(NA, n)
+for (i in 1:n) {
+    start <- i-radius
+    end <- i+radius
+    if (i <= radius) {
+        start <- 1
+    } else if (i > n - radius) {
+        end <- n
+    }
+    ma[i] <- mean(x[start:end], na.rm=TRUE)
+}
+ma
+```
+
+8. 1st with explicit loop:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+data.seq <- 1:100
+
+## First - with loop
+data.diff <- rep(NA, length(data.seq)-1)
+
+for (i in 1:length(data.diff)) {
+    data.diff[i] <- data.seq[i+1] - data.seq[i]
+}
+
+data.diff
+```
+
+2nd using a vectorized version:
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+data.diff <- data.seq[-1] - data.seq[-length(data.seq)]
+data.diff
+```
+
+3rd using native R function:
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+data.diff <- diff(data.seq)
+data.diff
+```
+

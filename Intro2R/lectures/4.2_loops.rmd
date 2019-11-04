@@ -1,0 +1,353 @@
+---
+title: "Data types II: dataframes, lists, and other data types"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
+date: "4-8 November 2019"
+output: html_document
+---
+
+
+## **Content Description**
+
+In this lecture we will see how to use loops in R, including *while* and *for*
+constructs.
+
+## **Introduction**
+
+The loops are a programming feature that is easy to grasp but may cause some
+confusion at the first contact. Looping allows to automate many tasks in R and
+are a basic feature of programming languages. In fact, it is so ubiquitous that
+in R we have been using loops without explicitly writing the code. For instance,
+every time we write an *apply*, a *rowMeans*, a *rownames* there is implicitly a
+loop inside the code the iterates over data to get what we asked.
+
+Understanding the loops constructs is a major step in the process of learning
+how to program in R. We will use a simple example with the calculation of the
+mean value of a group of values and adding some complexity to better understand
+the concepts.
+
+Let's define our simple vector as:
+
+**(5, 12, 7, 13, 14, 2, 8, 13, 9, 7)**
+
+On the first day we learned that we could use R as a simple calculating machine.
+We can use that to calculate the mean:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+(5+12+7+13+14+2+8+13+9+7)/10
+```
+
+Although we get what we wanted, this is not very useful if we want to calculate 
+the mean of other data, or if we have 1000 of values to type... We also learned 
+that we could set up a variable and use it to hold a vector.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+v <- c(5, 12, 7, 13, 14, 2, 8, 13, 9, 7)
+```
+
+We could calculate the mean by assessing elements in the vector:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+(v[1] + v[2] + v[3] + v[4] + v[5] + v[6] + v[7] + v[8] + v[9] + v[10]) / length(v)
+```
+
+This is better because we can change the original values in the vector and still
+get the correct mean, but we are limited to vectors of length 10. But, if we look
+to the code there is a repetition of the *v[i]*, only changing the indices. What 
+if there was a way to **loop** over all indices of a vector independently of the
+size?
+
+R has two main types of loops constructs the *for* and the *while*. 
+
+
+## **For loops**
+
+The for loop has a very simple structure:
+
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+for (i in VECTOR) {
+    DO_SOME_CODE
+}
+```
+
+VECTOR is any vector we created that will give values to variable *i* sequentially
+in each cycle. If VECTOR is (1,2,3) then *i* will assume each of those values in
+three cycles:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+for (i in c(1,2,3)) {
+    print(paste("iteration", i))
+}
+```
+
+**Note** that we are naming the loop variable as *i*. We could give any name to
+the variable. At the end of the loop, *i* will only store the last value.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+i
+```
+
+but it had all values in the three cycles as shown by the *print* command. Let's
+use to calculate the mean value of the vector v.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+mean.val <- 0
+for (i in 1:length(v)) {
+    mean.val <- mean.val + v[i]
+}
+mean.val <- mean.val / length(v)
+mean.val
+```
+
+Now we can calculate the mean of any numeric vector, independently of its length!
+Of course we could have used the *mean* function built-in in R to this simple task.
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+1. Create a large random vector (more than 100 elements) and use a for loop to
+calculate the mean value.
+
+---
+
+
+We can loop over other vectors, not only numbers of indices. Let's read again
+the [bumpus](https://raw.githubusercontent.com/PhenoEvo/phenoevo.github.io/master/Intro2R/data/bumpus.txt) data:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus <- read.table("bumpus.txt", sep="\t", header=TRUE, stringsAsFactors=FALSE)
+```
+
+We can loop over age, for instance:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+for (a in bumpus$age) {
+    print(a)
+}
+```
+
+The *for* is most useful when we have code that processes data instead of 
+only printing. Let's calculate mean HL values for males and females. 
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+male <- 0
+female <- 0
+n.male <- 0
+n.female <- 0
+
+for (i in 1:nrow(bumpus)) {
+    if (bumpus$sex[i] == 'f') {
+        female <- female + bumpus$HL[i]
+        n.female <- n.female + 1
+    } else {
+        male <- male + bumpus$HL[i]
+        n.male <- n.male + 1
+    }
+}
+male/n.male
+female/n.female 
+```
+
+Instead of coding the whole mean algorithm, we could instead use the *for* loop
+to create two subsets of our data depending on gender. Then we can use the *mean*
+function from R to get the values.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+male <- NULL
+female <- NULL
+
+for (i in 1:nrow(bumpus)) {
+    if (bumpus$sex[i] == 'f') {
+        female <- c(female, bumpus$HL[i])
+    } else {
+        male <- c(male, bumpus$HL[i])
+    }
+}
+mean(female)
+mean(male) 
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+2. Try to find a third version of the loop to get same results.
+
+---
+
+
+A less common but practical application is to perform system tasks like renaming
+file, create directory structures, etc. In the next example we have 100 files 
+with name as "Myfile_Today_000.txt". We want to replace the "Today" part of the
+name with the current date ([example files](https://raw.githubusercontent.com/PhenoEvo/phenoevo.github.io/master/Intro2R/data/examplefiles.zip)).
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+folder <- "examplefiles"
+files <- list.files(folder, "*", full.names=TRUE)
+
+for (file in files) {
+    newfile <- sub("Today", Sys.Date(), file)
+    file.rename(file, newfile)
+}    
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+3. Imagine that you need to perform 10 different runs of some analysis where, in
+each run you test the influence of one parameter k from 0.0 to 0.5, every 0.05.
+Create a directory structure to store your results as **Output/RUN_1/k_0.1**
+
+---
+
+
+## **While**
+
+The difference between *for* and *while* loops is in the setup: *for* iterates
+over a vector and *while* loops until a condition is *FALSE*. In practical terms,
+the *while* loop is more suitable when we have to iterate until we reach some 
+goal but we don't know when it will be met.
+
+To better illustrate this let's build a small example. We will start with an 
+empty vector and we will grow the vector with a random number each cycle, until
+the sum of all elements in the vector is 100.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+myData <- NULL
+while (sum(myData) < 100) {
+    item <- rnorm(1)
+    myData <- c(myData, item)
+}
+
+length(myData)
+```
+
+The length of myData is huge! The reason is that *rnorm* with the default values
+will return positive and negative numbers. Let's skip the negative number, only
+growing the vector if the number is positive. The loops in R can be controlled
+in the code with two commands: *next* that skips a cycle, and *break*, that quits
+the loop. 
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+myData <- NULL
+while (sum(myData) < 100) {
+    item <- rnorm(1)
+    if (item < 0) {
+        next
+    }
+    myData <- c(myData, item)
+}
+
+```
+
+To demonstrate the *break* command, let's create a situation where we have the 
+same condition (sum < 100) but we want to stop at a maximum level of iterations,
+even if we did not met the first condition.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+myData <- NULL
+maxIter <- 50
+iter <- 0
+while (sum(myData) < 100) {
+    item <- rnorm(1)
+    if (item < 0) {
+        next
+    }
+    if (iter > maxIter) {
+        break
+    }
+    myData <- c(myData, item)
+    iter <- iter + 1
+}
+
+length(myData)
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+4. What is the length of myData? Why?
+5. Can you recode the loop to stop when the length is 50?
+
+---
+
+## **Vectorization**
+
+Knowing how to build *for* and *while* loops is a powerful skill that will help
+with our analyses many times. However, we must not forget that R is a *vectorized*
+language. If we can translate our logic in a loop to a vectorized version, the 
+latter will, most likely, be more efficient. 
+
+Let's see an example: How many males are in the bumpus dataset? We can code a
+small for loop to count them:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+n.males <- 0
+for (i in 1:nrow(bumpus)) {
+    if (bumpus$sex[i] == 'm') {
+        n.males <- n.males + 1
+    }
+}
+n.males
+```
+
+However, knowing that we could operate on the vector directly with a simple 
+condition would make that code a lot simpler:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+n.males <- sum(bumpus$sex == 'm')
+n.males
+```
+
+We could also use *table* to get the same result as previous:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+table(bumpus$sex)
+```
+
+We can used the vectorization with subsets in R to calculate the average HL for
+females:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+mean(bumpus$HL[bumpus$sex == 'f'])
+```
+
+Many times we will try to reinvent the wheel. R base has many functions 
+which are extended by thousand of packages available. Many of these are extremely
+well programmed and optimized for efficiency, so they are faster than to explicitly
+code the loop. 
+
+For instance instead of looping with nested if-else conditions, we can use R
+built-in vectorized version, to classify samples as "big" or "small" regarding
+the HL size and count them
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+table(ifelse(bumpus$HL < 18, "small", "big"))
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+6. Translate the average scheme in [figure](4.2_loops_average.svg) to R code (assumes a 
+vector of length 5).
+7. Translate the moving average scheme in [figure](4.2_loops_maverage.svg) to R code (first
+create large vector). 
+8. With the vector *1:100* calculate the difference between an item and the previous
+for all vector. Try to find three different ways to calculate it.
+
+---
+
+
+
+[Solutions here.](4.2_loops_solutions.html)
+
+
+
