@@ -1,0 +1,521 @@
+---
+title: "Data types II: dataframes, lists, and other data types"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
+date: "4-8 November 2019"
+output: html_document
+---
+
+
+## **Content Description**
+
+In this lecture we will see how to review data in a table and how to reorganize
+dataframes into new tables. We will start by simple data inspection in a 
+dataframe and then we will see how to create new tables based on the original
+table, similarly to pivot tables in spreadsheets. 
+
+
+## **Introduction**
+
+We will be using the [Bumpus](https://raw.githubusercontent.com/PhenoEvo/phenoevo.github.io/master/Intro2R/data/bumpus.txt) dataset. Based on yesterday's class, we have to read
+the data from a file to a dataframe.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus <- read.table("bumpus.txt", sep=",", header=TRUE)
+```
+
+The first inspection is to check the object
+
+```{r, eval=FALSE, error=TRUE, echo=TRUE}
+bumpus
+```
+
+The result is not displayed here, but you can see that is not very useful to 
+display the whole dataset. The RStudio IDE also has graphical ways to inspect
+the dataframe but it is useful to know some commands to rapidly check data.
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+Try also the *View* command:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+View(bumpus)
+```
+1. Can you spot and correct the error?
+
+---
+
+
+```{r, eval=TRUE, error=TRUE, echo=FALSE}
+# Error correction: do not show in text
+bumpus <- read.table("bumpus.txt", sep="\t", header=TRUE)
+```
+
+## **Review data table**
+
+Before analysing our data we need to check if the data was correctly open, if
+there are errors, naming of variables, etc. R offers many ways to check this.
+
+Showing the whole dataset isn't very useful and, if it is very large we can even
+run into some problems. We can check the first few lines of the table:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+head(bumpus) # shows 6 lines by default
+```
+
+or we can explicitly say how many lines we want to see:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+head(bumpus, 2)
+```
+
+We can do the same but for the end of the table:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+tail(bumpus)
+tail(bumpus, 2)
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+2. Find another way to show the head and tail of a table.
+
+---
+
+Checking other proprieties of the table may help to debug some errors on the
+data. For instance, if we know the number of samples in out dataset, we expect
+to have a table with the same number of rows. We can easily check that in R.
+
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+nrow(bumpus)
+ncol(bumpus) 
+dim(bumpus)
+names(bumpus)
+
+```
+
+A very useful command is the *str* that displays details of the structure of an
+object. Here we can have indication of the type (numeric, character, etc) of 
+each element in an object (a list, data frame, etc) together with size and 
+few elements. This is very helpful to diagnose problems with our dataset.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+str(bumpus)
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+3. We still have an error in our data. Can you spot it?
+
+---
+
+
+
+## **Exploring the variables** 
+
+### Summaries
+
+The *summary* command displays variable information. As each variable may have
+a different class, *summary* adapts and shows relevant information specific 
+to the class and type.  If is a numeric matrix, for instance, it provides 
+Minimum, Mean and Maximum values, or if a factor it counts the number of 
+occurrences per level. 
+
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+summary(bumpus)
+```
+
+Of course, you can call each column of the dataframe individually and check its
+contents and summary.
+
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus[,3]
+bumpus$age
+summary(bumpus$WT)
+```
+On numeric variables the *summary* returns quantiles that might give us a good
+hint on how the data is distributed. But we might be interested on particular 
+values instead. 
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+max(bumpus$TL)
+min(bumpus$TL)
+range(bumpus$TL)
+mean(bumpus$TL)
+quantile(bumpus$TL)
+```
+
+**Remember** that all this values that are returned are vectors. You can store 
+them on variables and use them to other calculations or plotting!
+
+
+If we want to know how many birds survived we could use a simple tabulating 
+function of R:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+table(bumpus$survived)
+```
+
+but we have to be careful when applied to continuous variables because results
+depend on all decimal values
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+table(bumpus$WT)
+table(round(bumpus$WT,0))
+```
+
+The best way to explore a continuous variable is by either using the functions
+above or directly plot a simple histogram.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+hist(bumpus$WT)
+
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+4. Can you use the survived table above to calculate survival frequency instead
+of counts?
+
+---
+
+
+
+### Averages
+
+We already saw that we can get a mean of a particular column. But we might need
+the mean of all columns stored in a variable.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+colMeans(bumpus)
+```
+
+However, that only works with numeric variables. Let's select them and store as
+another variable:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus.num <- bumpus[, sapply(bumpus, is.numeric)]
+```
+
+We are using an indexing trick here. A vector returned by a function is used to 
+filter the dataframe. The function *is.numeric* returns a logical value 
+indicating if the variable is numeric or not. This is used within *sapply* that
+applies the function to all columns in the dataframe. The vector returned is a 
+series of *TRUE* and *FALSE* values indicating which columns are numeric. That
+vector is of the same size as columns in bumpus, so we used it to get only columns
+that are numeric. 
+
+Now we can apply the function to our new dataframe.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+colMeans(bumpus.num)
+rowMeans(bumpus.num)
+
+```
+**Note** that the mean of the rows in this dataset is not very useful! We get
+means between different variables (different lengths and weights).
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+5. Use an *apply* function to get the same results.
+
+---
+
+
+To explore our data or as a step in our analyses we often need a value like the
+mean per certain classes. We can get that also:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+by(data=bumpus.num, INDICES=bumpus$sex, FUN=colMeans)
+```
+
+## Variation and covariation
+
+We might want the standard deviation of our variables. R provides and easy
+function for that:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+sd(bumpus$WT)
+```
+
+However it can be only applied on single variables.
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+sd(bumpus.num)
+```
+
+The error is not directly related to the *sd* calculation, but relates to the 
+fact that the data.frame is a list and the list cannot be coerced to a numeric
+object. We can coerce manually to a matrix:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+sd(as.matrix(bumpus.num))
+```
+If we use *sd* in a fully numeric matrix, we get a single value for the whole 
+data (the matrix is being treated as a large vector).
+
+That's when the usefulness of the *apply* family of functions becomes evident!
+Unlike means and sums that have special functions to estimate row- or 
+column-wise, many other functions, like *sd*, do not have. We can still use it
+the same way in R:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+apply(X=bumpus.num, MARGIN=2, FUN=sd)
+```
+
+we can also apply row-wise:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+apply(X=bumpus.num, MARGIN=1, FUN=sd)
+```
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+5. Can you get the percentile 93% of every column in bumpus.num?
+
+---
+
+
+We have seen how get some descriptive statistics on each columns. We may be 
+interested on relations between columns/variables:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+cov(bumpus.num)
+cor(bumpus.num)
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+6. Try to get the spearman correlation matrix.
+
+---
+
+## **Tabulating**
+
+We already saw an example of the *table* command. 
+
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+age.table <- table(bumpus$age)
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+7. What value does this table hold?
+
+---
+
+We can check the proportion in our table.
+
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+prop.bumpus <- prop.table(bumpus.num)
+head(prop.bumpus)
+
+```
+
+However, as default, the *prop.table* returns the proportion to the sum of the
+whole table:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+sum(prop.bumpus)
+
+```
+
+Using the help of the function (*?prop.table*) we could check if there is an 
+argument to the function that allows to calculate the proportions column wise.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+prop.bumpus <- prop.table(bumpus.num, margin=2)
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+8. Correct the error!
+9. Check column sums to see if the results is as expected.
+
+---
+
+
+### Cross-tabulation
+
+R has many options to build contingency tables. One of the commands is, as 
+already seen *table*:
+
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+sex.sur <- bumpus[,c("sex", "survived")]
+head(sex.sur)
+table(sex.sur)
+
+```
+
+We can relate two variables with cross tabulation to get counts of items to 
+the corresponding classes. The application makes more sense with categorical
+data (factors, logical) or with a classified continuous variable.
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+11. How could you get frequencies (equivalent to *prop.table*) using the last
+results?
+12. Repeat for the columns 'age' and 'sex'. Explain the results.
+13. What do you expect if you add a third column (age, sex, survived)?
+
+---
+
+We have other ways to get similar tables in R. A very useful function is *xtabs*
+that allows a formula interface for designing the table.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+xtabs(~ sex + survived, bumpus)
+```
+
+The formula with the ~ notation defines the variables that we want to cross
+tabulate. Because we do not have anything at the left of the ~, it counts
+the items in each combination of categories. We can use variable instead of
+counts:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+xtabs(TL ~ survived + sex, bumpus)
+
+```
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+14. Calculate the average TL per survived individual and sex
+
+---
+
+
+## **Sorting and ordering data**
+
+Sorting and ordering are two different but related concept in R. The *sort*
+function returns a vector of the same size of the original but with the 
+elements sorted by increasing order.
+
+Using the TL variable as example:
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+tl <- bumpus$TL
+tl
+sort(tl)
+```
+
+We might not be interested in the sorted values but in other information in the
+table sorted by the TL. As example, let's give names to each sample and try
+to get the sorted names.
+
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+names(tl) <- paste("sample", 1:nrow(bumpus), sep"_")
+tl
+sorted.tl <- sort(tl)
+sorted.tl
+names(sorted.tl)
+```
+
+This is much code for a very common task in analysing data... R does provide a 
+easier way. The difference between *sort* and *order* is on the values the 
+function returns: the *sort* returns the sorted values, the *order* returns the
+**indices** of the sorted values in the correct position.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+order(bumpus$TL)
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+15. Sort the bumpus data.frame based on the Total Length (TL) column
+
+---
+
+
+## **Merging tables**
+
+Very frequently we have the need to merge information from two different 
+databases. For instance, we might have sample measurements in one file, dna
+sequencing data in another, and spatial locations in another. All databases might
+be related by sample code but might have different samples (one sequenced sample,
+might not have measurements, etc) or have different orders. To proceed with our
+analysis we need all data together.
+
+In this example we have (randomly created) coordinates for each sample that we 
+read from a [file](https://raw.githubusercontent.com/PhenoEvo/phenoevo.github.io/master/Intro2R/data/coords.txt).
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+coords <- read.table("coords.txt", sep=';', header=TRUE)
+head(coords)
+```
+
+In this case, the *subject* column exists in both tables and **we know** that
+is the column that establishes a relation between the two tables.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus2 <- merge(bumpus, coords)
+head(bumpus2)
+```
+
+Notice that the subject is repeated in the bumpus table. The *merge* also repeated 
+the coordinate if the sample was the same.
+
+
+Let's force the coordinates table to have different column names that
+do not match with bumpus.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+colnames(coords) <- c("sub", "lat", "lon")
+head(coords)
+```
+
+Now we have to explicitly say to *merge* which columns we want to use to 
+establish a relation between tables.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus3 <- merge(bumpus, coords, by.x="subject", by.y="sub")
+```
+
+
+---
+
+### $\color{red}{\text{CHALLENGE}}$
+
+16. Check the number of rows of bumpus2. Why is it different? Can you force
+*merge* with coordinates to return the same number of rows as the original 
+bumpus?
+
+---
+
+[Solutions here.](3.2_reviewing_solutions.html)
+

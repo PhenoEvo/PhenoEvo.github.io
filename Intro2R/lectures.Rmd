@@ -24,7 +24,7 @@
 
 [3.1. Data indexing](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
-[3.2. Reviewing and tabulating your data](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
+[3.2. Reviewing and tabulating your data](https://PhenoEvo.github.io/Intro2R/lectures/3.2_reviewing.html)
 
 [3.3. String manipulation](https://PhenoEvo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
