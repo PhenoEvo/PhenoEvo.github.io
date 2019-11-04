@@ -5,4 +5,12 @@ Example data files used in the course
 
 [beavers.txt](https://PhenoEvo.github.io/Intro2R/data/beavers.txt)
 
+[bumpus.txt](https://PhenoEvo.github.io/Intro2R/data/bumpus.txt)
 
+[coords.txt](https://PhenoEvo.github.io/Intro2R/data/coords.txt)
+
+[dem.tif](https://PhenoEvo.github.io/Intro2R/data/dem.tif)
+
+[examplefiles.zip](https://PhenoEvo.github.io/Intro2R/data/examplefiles.zip)
+
+[randomTree.tre](https://PhenoEvo.github.io/Intro2R/data/randomTree.tre)
