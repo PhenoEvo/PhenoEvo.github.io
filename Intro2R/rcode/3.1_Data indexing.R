@@ -1,8 +1,8 @@
-##################################################################
-### ADVANCED COURSE OF INTRODUCTION TO R - CIBIO, 6-10 NOVEMBER 2017
-### DATA INDEXING
-# A. Kaliontzopoulou
-###################################################################
+################################################################################
+### ADVANCED COURSE OF INTRODUCTION TO R - CIBIO, 4-8 NOVEMBER 2019
+### DATA TYPES: VECTORS, MATRICES AND ARRAYS
+# A. Jesús Muñoz-Pajares,  A. Kaliontzopoulou, P. Tarroso, U. Enriquez-Urzelai
+################################################################################
 
 # VECTORS have one dimension
 vec1 <- rnorm(10)
