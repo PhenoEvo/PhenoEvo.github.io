@@ -32,3 +32,4 @@ Course Schedule of Activities
   2. Practice session: function writing
   3. Showcase: statistical analysis of biological data
   
+  
