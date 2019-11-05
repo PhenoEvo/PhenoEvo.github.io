@@ -243,7 +243,7 @@ data we created with the associated data type.
 ---
 
 ### $\color{red}{\text{CHALLENGE}}$
-```{r, eval=FALSE, error=TRUE}
+```{r, eval=TRUE, error=TRUE}
 my.list2 <- list(item1=vec1, item2=vec3, item3=23, item4="this is a list")
 ```
 
