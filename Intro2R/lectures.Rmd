@@ -19,7 +19,7 @@
 [2.2. Data types II: data frames, lists, and other data types](https://phenoevo.github.io/Intro2R/lectures/2.1_Vectors_matrices_arrays.html)
 
 
-2.3. Data import-export, workspaces and directories
+[2.3. Data import-export, workspaces and directories](https://phenoevo.github.io/Intro2R/lectures/2.3_Import_Export_Workspaces.html)
 
 2.4. Practical session: bring and load your own data
 
