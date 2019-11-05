@@ -1,0 +1,263 @@
+---
+title: "Introduction to R: Data import-export, workspaces and directories"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
+date: "4-8 November 2019"
+output: html_document
+---
+
+## **Content Description**
+
+Importing data to and exporting data from R is crucial to perform any statistical analysis. In this lecture we will review some useful commands -or functions- to access the objects stored in memory, to find out the folder where data will be saved or loaded from, and to import and export datasets. 
+
+
+## **Workspace**
+
+The workspace is everything you did in your current R working environment including objects, libraries, options... At the end of a session, you will be able to save the entire workspace. Doing that, all the objects you created will be available the next time you will run R again. **NOTE**: Remember that in many cases it is better to save and re-run the "clean script" instead of storing the entire command history, probably containing many steps with errors and objects that probably you will not remember being defined.
+
+You can see all the objects contained in memory using the `ls()` function. If you did not store your previous session, it will be empty:
+
+```{r}
+ls()
+```
+
+Let's create some objects:
+
+```{r}
+a <- 1
+b <- "letter b"
+d <- matrix(3, 4)
+f <- function(x){x*3}
+ls()
+```
+
+You can remove objects using `rm()`.
+
+To remove only one object:
+
+```{r}
+rm("a") # it works with and without quotes
+rm(b)
+```
+
+To remove several objects in a single step you can type the names of all of them:
+
+```{r}
+rm("d", "f")
+```
+
+Let's create the same objects again:
+
+```{r}
+a <- 1
+b <- "letter b"
+d <- matrix(3, 4)
+f <- function(x){x*3}
+ls()
+```
+
+To remove all the elements without typing their names:
+
+```{r}
+rm(list=ls())
+ls()
+```
+
+
+## **Working directory**
+
+The working directory is a folder in your computer where R will save and load files. Two functions are key at this point.
+
+To know which your current working directory is:
+
+```{r}
+getwd()
+```
+
+To change your working directory to other folder:
+
+```{r, eval=F}
+setwd("complete/or/partial/path/to/folder")
+```
+
+**IMPORTANT!** Be careful with bars in the path if you are using WINDOWS. `\` and `/` mean different things. R uses `\` as an "escape" character (e.g., `"\t"`). For that, in windows, you may type paths as `c:\\users\\mydocuments\\file.R` or `c:/users/mydocuments/file.R`.
+
+In Rstudio, you can also set the working directory manually.
+
+To see the files contained in the working directory folder use: 
+
+```{r}
+list.files()
+```
+
+And in any other folder:
+
+```{r}
+list.files("~/Documents/")
+```
+
+
+## **Importing / Exporting data**
+
+### **Import data matrices from Excel**
+
+There are may ways of doing that. The most simple way is by saving the excel file as a plain text file (separated by ",", ";", "tab", ...). Then, we can use the `read.table()` function to read in the data. **IMPORTANT!** Names must include file extensions, even if you are not able to see them in some operating systems (e.g. windows).
+
+We will start by reading an example vector:
+
+```{r}
+read.table(file="2.3_Import/Example1_vector.txt")
+```
+
+You can read the table by defining the file's complete path (as above) or you can set the working directory before and read directly from the folder:
+
+```{r}
+setwd("2.3_Import/")
+read.table("Example1_vector.txt")
+```
+
+We read the vector using all the arguments by default. Check all the options:
+
+```{r}
+?read.table
+```
+
+Now read an example matrix:
+
+```{r, echo=F}
+setwd("2.3_Import/")
+Matrix1 <- read.table("Example2_Matrix.txt")
+```
+```{r, eval=F}
+Matrix1 <- read.table("Example2_Matrix.txt")
+```
+
+Check Matrix1 and see if there is something wrong.
+
+```{r}
+str(Matrix1)
+```
+
+The first line should not be like this, but it should be the header. The impact of using a wrong option for header is huge. The data inside the matrix becomes a factor, as they have at least one element that is not a number. To avoid that from happening:
+
+```{r, echo=F}
+setwd("2.3_Import/")
+Matrix2 <- read.table("Example2_Matrix.txt", header=T)
+```
+```{r, eval=F}
+Matrix2 <- read.table("Example2_Matrix.txt", header=T)
+str(Matrix2)
+```
+
+As the first column is a factor, you can not multiply the matrix by a number (e.g. 7):
+
+```{r, eval=F}
+Matrix1*7
+```
+```{r, echo=F}
+head(Matrix1*7)
+```
+
+```{r, eval=F}
+Matrix2*7
+```
+```{r, echo=F}
+head(Matrix2*7)
+```
+
+Again we have error in the Matrix2! Why?? Check Matrix2 and the other default options of read.table. Yes! The decimal symbol is "." by default, but in our case is ",". Thus:
+
+```{r, echo=F}
+setwd("2.3_Import/")
+Matrix3 <- read.table("Example2_Matrix.txt", header=T, dec=",")
+```
+```{r, eval=F}
+Matrix3 <- read.table("Example2_Matrix.txt", header=T, dec=",")
+```
+
+```{r}
+str(Matrix3)
+```
+
+```{r, eval=F}
+Matrix3*7
+```
+```{r, echo=F}
+head(Matrix3*7)
+```
+
+Another example:
+
+```{r, echo=F}
+setwd("2.3_Import/")
+CO2.1 <- read.table("Example3_CO2.txt", header=T, dec=",")
+```
+```{r, eval=F}
+CO2.1 <- read.table("Example3_CO2.txt", header=T, dec=",")
+```
+```{r}
+str(CO2.1)
+```
+
+As always check for potential problems: header, decimal, separator, and row.names:
+
+```{r, echo=F}
+setwd("2.3_Import/")
+CO2.2 <- read.table("Example3_CO2.txt", header=T, dec=".", sep=";", row.names=1)
+```
+```{r, eval=F}
+CO2.2 <- read.table("Example3_CO2.txt", header=T, dec=".", sep=";", row.names=1)
+```
+```{r}
+str(CO2.2)
+```
+
+**IMPORTANT!** Always check the dataset you read to fit the options!!
+
+
+After opening (and working with the data) you can save the data in your computer. Again check all the options available, that are almost the same than before.
+
+```{r}
+?write.table
+```
+
+For conveniency we can save the object CO2.2, with NA, separator as space, and without row names:
+
+```{r, eval=F}
+write.table(CO2.2, file="New_CO2_2.txt", sep=" ", dec=".", na="NA")
+```
+
+As before, this will be stored in you working directory. Alternatively you can specify another (complete) path to save the dataset:
+
+```{r, eval=F}
+write.table(CO2.2, file="~/Dropbox/New_CO2_2.txt", sep=" ", dec=".", na="NA")
+```
+
+**REMEMBER:** If you need to read/save a file that is in a different folder, you may either set your working directory to this folder or include the entire path when inporting/exporting.
+
+
+## **Exercises**
+
+1. Download the "import_export_exercise.zip" file and uncompress it.
+2. Change the working directory to the folder "import_export_exercise".
+2. Read and create objects using the example files contained in the folder "Exercise_Import".
+3. Save them to the folder "Exercise_Export"
+
+In all cases, save files using commas as column separator with column names and without row names.
+
+There are also specific packages for reading excel files, as also for reading phylogenetic trees, microsatellite data, etc. Check the help file of each function before using them!
+
+```{r, eval=F}
+read.csv(file, header = TRUE, sep = ", ", quote = "\"",
+         dec = ".", fill = TRUE, comment.char = "", ...)
+
+read.csv2(file, header = TRUE, sep = ";", quote = "\"",
+          dec = ", ", fill = TRUE, comment.char = "", ...)
+
+read.delim(file, header = TRUE, sep = "\t", quote = "\"",
+           dec = ".", fill = TRUE, comment.char = "", ...)
+
+read.delim2(file, header = TRUE, sep = "\t", quote = "\"",
+            dec = ", ", fill = TRUE, comment.char = "", ...)
+```
+
+
