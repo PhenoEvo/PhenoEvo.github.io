@@ -9,3 +9,4 @@ R is a programming language for statistical computing freely available, and with
 The objective of this short course is to provide a general introduction towards using R for data analyses. We will provide a general review of basic operations, data types and management, aiming at familiarizing the students with the R environment without requirement of prior experience in R or programming. The course will follow a hands-on approach, with a theoretical background previous to each practical session. Participants are encouraged to bring their own data.
 
 This course will provide the basis for more advanced courses on specific topics using R, and it will be a requirement for students interested in enrolling in those courses.
+
