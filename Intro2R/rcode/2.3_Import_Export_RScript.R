@@ -116,7 +116,8 @@ CO2.1 <- read.table("Example3_CO2.txt", header=T, dec=",")
 
 
 
-CO2.2 <- read.table("Example3_CO2.txt", header=T, dec=".", sep=";", row.names=1)
+CO2.2 <- read.table("Example3_CO2.txt", header=T, dec=".", sep=";", 
+                    row.names=1)
 
 # After opening (and working with the data) you can save the data in your computer. 
 # Again check all the options available, that are almost the same than before.
@@ -127,7 +128,8 @@ CO2.2 <- read.table("Example3_CO2.txt", header=T, dec=".", sep=";", row.names=1)
 write.table(CO2.2, file="New_CO2_2.txt", sep=" ", dec=".", na="NA")
 
 
-write.table(CO2.2, file="~/Dropbox/New_CO2_2.txt", sep=" ", dec=".", na="NA")
+write.table(CO2.2, file="~/Dropbox/New_CO2_2.txt", sep=" ", 
+            dec=".", na="NA")
 
 # REMEMBER: If you need to read/save a file that is in a different folder, 
 # you may either set your working directory to this folder or include the entire path 
