@@ -1,0 +1,124 @@
+---
+title: "Data types II: dataframes, lists, and other data types"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
+date: "4-8 November 2019"
+output: html_document
+---
+
+```{r, eval=TRUE, error=TRUE, echo=FALSE}
+bumpus <- read.table("bumpus.txt", sep=",", header=TRUE)
+```
+
+
+1. Separators are tabs
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus <- read.table("bumpus.txt", sep="\t", header=TRUE)
+```
+
+2. With indexing:
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus[1:5,]
+n <- nrow(bumpus)
+bumpus[(n-5):(n),]
+```
+
+3. The NAs are not correctly defined
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus <- read.table("bumpus.txt", sep="\t", header=TRUE, na.strings = "")
+```
+
+4. The table have counts, just divide by the number of rows
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+table(bumpus$survived)/nrow(bumpus)
+```
+
+```{r, eval=TRUE, error=TRUE, echo=FALSE}
+bumpus.num <- bumpus[, sapply(bumpus, is.numeric)]
+```
+
+
+
+5. 
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+apply(bumpus.num, 2, mean)
+apply(bumpus.num, 1, mean)
+```
+
+6. Use quantile with apply with prob set to 0.93
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+apply(X=bumpus.num, 1, quantile, probs=0.93)
+```
+
+7. Change the default argument
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+cor(bumpus.num, method="spearman")
+```
+
+8. The counts of young and adults. It might have also counts of an empty string
+if NAs were not properly defined in the *read.table* before. 
+
+9. The function needs and array/matrix like object and not a data.frame
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+prop.bumpus <- prop.table(as.matrix(bumpus.num), margin=2)
+```
+
+10. All columns must sum to 1 to be correct.
+
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+colSums(prop.bumpus)
+```
+
+```{r, eval=TRUE, error=TRUE, echo=FALSE}
+sex.sur <- bumpus[,c("sex", "survived")]
+```
+
+
+11. Just divide by the total number of individuals. 
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+table(sex.sur)/nrow(sex.sur)
+```
+
+12. In this case we have to deal with missing data.
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+agesex <- bumpus[,c("age", "sex")]
+agesex <- na.exclude(agesex)
+table(agesex)/nrow(agesex)
+```
+
+13. It deals with a third dimension by treating as array
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+agesexsur <- bumpus[,c("age", "sex", "survived")]
+agesexsur <- na.exclude(agesexsur)
+table(agesexsur)
+
+```
+
+14. Just divide by the sum of TL
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+xtabs(TL ~ survived + sex, bumpus)/xtabs(~ sex + survived, bumpus)
+```
+
+15. Use *order* as indexing filter.
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+sorted <- bumpus[order(bumpus$TL),]
+head(sorted)
+```
+
+```{r, eval=TRUE, error=TRUE, echo=FALSE}
+coords <- read.table("coords.txt", sep=';', header=TRUE)
+colnames(coords) <- c("sub", "lat", "lon")
+```
+
+16. check the arguments to merge
+```{r, eval=TRUE, error=TRUE, echo=TRUE}
+bumpus4 <- merge(bumpus, coords, by.x="subject", by.y="sub", all=TRUE)
+head(bumpus4)
+dim(bumpus4)
+```
+
+
+
+
+
+
+

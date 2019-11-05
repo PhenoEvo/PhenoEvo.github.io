@@ -369,57 +369,28 @@ summary {
 </div>
 
 
-<div id="content-description" class="section level2">
-<h2><strong>Content Description</strong></h2>
-<p>In this lecture we will see how to review data in a table and how to reorganize dataframes into new tables. We will start by simple data inspection in a dataframe and then we will see how to create new tables based on the original table, similarly to pivot tables in spreadsheets.</p>
-</div>
-<div id="introduction" class="section level2">
-<h2><strong>Introduction</strong></h2>
-<p>We will be using the <a href="https://raw.githubusercontent.com/PhenoEvo/phenoevo.github.io/master/Intro2R/data/bumpus.txt">Bumpus</a> dataset. Based on yesterday’s class, we have to read the data from a file to a dataframe.</p>
-<pre class="r"><code>bumpus &lt;- read.table(&quot;bumpus.txt&quot;, sep=&quot;,&quot;, header=TRUE)</code></pre>
-<p>The first inspection is to check the object</p>
-<pre class="r"><code>bumpus</code></pre>
-<p>The result is not displayed here, but you can see that is not very useful to display the whole dataset. The RStudio IDE also has graphical ways to inspect the dataframe but it is useful to know some commands to rapidly check data.</p>
-<hr />
-<div id="colorredtextchallenge" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
-<p>Try also the <em>View</em> command:</p>
-<pre class="r"><code>View(bumpus)</code></pre>
 <ol style="list-style-type: decimal">
-<li>Can you spot and correct the error?</li>
+<li>Separators are tabs</li>
 </ol>
-<hr />
-</div>
-</div>
-<div id="review-data-table" class="section level2">
-<h2><strong>Review data table</strong></h2>
-<p>Before analysing our data we need to check if the data was correctly open, if there are errors, naming of variables, etc. R offers many ways to check this.</p>
-<p>Showing the whole dataset isn’t very useful and, if it is very large we can even run into some problems. We can check the first few lines of the table:</p>
-<pre class="r"><code>head(bumpus) # shows 6 lines by default</code></pre>
+<pre class="r"><code>bumpus &lt;- read.table(&quot;bumpus.txt&quot;, sep=&quot;\t&quot;, header=TRUE)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>With indexing:</li>
+</ol>
+<pre class="r"><code>bumpus[1:5,]</code></pre>
 <pre><code>##   subject sex age survived  TL  AE   WT  BHL      HL      FL     TTL
 ## 1       1   m   a     TRUE 154 241 24.5 31.2 17.4498 16.9672 25.9588
 ## 2       1   m   a    FALSE 165 240 26.5 31.0 18.7452 17.8816 27.8130
 ## 3       2   m   a    FALSE 160 245 26.1 32.0 18.6944 18.0086 28.1686
 ## 4       2   m   a     TRUE 160 252 26.9 30.8 18.6944 18.0086 29.9720
 ## 5       3   m   a     TRUE 155 243 26.9 30.6 18.6182 17.8816 29.2354
-## 6       3   m   a    FALSE 161 249 25.6 32.3 18.8722 18.2372 28.6512
 ##        SW     SKL
 ## 1 14.9098 21.0820
 ## 2 15.3924 21.5138
 ## 3 15.5194 21.3868
 ## 4 15.2908 21.3614
-## 5 15.2908 21.4884
-## 6 15.2908 21.0312</code></pre>
-<p>or we can explicitly say how many lines we want to see:</p>
-<pre class="r"><code>head(bumpus, 2)</code></pre>
-<pre><code>##   subject sex age survived  TL  AE   WT  BHL      HL      FL     TTL
-## 1       1   m   a     TRUE 154 241 24.5 31.2 17.4498 16.9672 25.9588
-## 2       1   m   a    FALSE 165 240 26.5 31.0 18.7452 17.8816 27.8130
-##        SW     SKL
-## 1 14.9098 21.0820
-## 2 15.3924 21.5138</code></pre>
-<p>We can do the same but for the end of the table:</p>
-<pre class="r"><code>tail(bumpus)</code></pre>
+## 5 15.2908 21.4884</code></pre>
+<pre class="r"><code>n &lt;- nrow(bumpus)
+bumpus[(n-5):(n),]</code></pre>
 <pre><code>##     subject sex age survived  TL  AE   WT  BHL      HL      FL     TTL
 ## 131      67   f         TRUE 156 237 23.4 30.9 17.9832 17.5514 28.5242
 ## 132      68   f         TRUE 158 244 25.9 31.4 18.5166 17.9070 29.1084
@@ -434,160 +405,26 @@ summary {
 ## 134 14.8590 20.0660
 ## 135 16.0020 21.8948
 ## 136 15.4178 21.4630</code></pre>
-<pre class="r"><code>tail(bumpus, 2)</code></pre>
-<pre><code>##     subject sex age survived  TL  AE   WT  BHL      HL      FL     TTL
-## 135      71   f         TRUE 163 246 27.4 32.5 18.5928 18.0594 29.5402
-## 136      72   f         TRUE 159 236 24.0 31.5 18.0086 18.1102 28.6766
-##          SW     SKL
-## 135 16.0020 21.8948
-## 136 15.4178 21.4630</code></pre>
-<hr />
-<p>Checking other proprieties of the table may help to debug some errors on the data. For instance, if we know the number of samples in out dataset, we expect to have a table with the same number of rows. We can easily check that in R.</p>
-<pre class="r"><code>nrow(bumpus)</code></pre>
-<pre><code>## [1] 136</code></pre>
-<pre class="r"><code>ncol(bumpus) </code></pre>
-<pre><code>## [1] 13</code></pre>
-<pre class="r"><code>dim(bumpus)</code></pre>
-<pre><code>## [1] 136  13</code></pre>
-<pre class="r"><code>names(bumpus)</code></pre>
-<pre><code>##  [1] &quot;subject&quot;  &quot;sex&quot;      &quot;age&quot;      &quot;survived&quot; &quot;TL&quot;       &quot;AE&quot;      
-##  [7] &quot;WT&quot;       &quot;BHL&quot;      &quot;HL&quot;       &quot;FL&quot;       &quot;TTL&quot;      &quot;SW&quot;      
-## [13] &quot;SKL&quot;</code></pre>
-<div id="colorredtextchallenge-1" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
-<ol start="2" style="list-style-type: decimal">
-<li>Find another way to show the head and tail of a table.</li>
-</ol>
-<hr />
-<p>A very useful command is the <em>str</em> that displays details of the structure of an object. Here we can have indication of the type (numeric, character, etc) of each element in an object (a list, data frame, etc) together with size and few elements. This is very helpful to diagnose problems with our dataset.</p>
-<pre class="r"><code>str(bumpus)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    136 obs. of  13 variables:
-##  $ subject : int  1 1 2 2 3 3 4 4 5 5 ...
-##  $ sex     : Factor w/ 2 levels &quot;f&quot;,&quot;m&quot;: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ age     : Factor w/ 3 levels &quot;&quot;,&quot;a&quot;,&quot;y&quot;: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ survived: logi  TRUE FALSE FALSE TRUE TRUE FALSE ...
-##  $ TL      : int  154 165 160 160 155 161 154 162 156 163 ...
-##  $ AE      : int  241 240 245 252 243 249 245 246 247 250 ...
-##  $ WT      : num  24.5 26.5 26.1 26.9 26.9 25.6 24.3 25.9 24.1 25.5 ...
-##  $ BHL     : num  31.2 31 32 30.8 30.6 32.3 31.7 32.3 31.5 32.5 ...
-##  $ HL      : num  17.4 18.7 18.7 18.7 18.6 ...
-##  $ FL      : num  17 17.9 18 18 17.9 ...
-##  $ TTL     : num  26 27.8 28.2 30 29.2 ...
-##  $ SW      : num  14.9 15.4 15.5 15.3 15.3 ...
-##  $ SKL     : num  21.1 21.5 21.4 21.4 21.5 ...</code></pre>
-<hr />
-</div>
-<div id="colorredtextchallenge-2" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
 <ol start="3" style="list-style-type: decimal">
-<li>We still have an error in our data. Can you spot it?</li>
+<li>The NAs are not correctly defined</li>
 </ol>
-<hr />
-</div>
-</div>
-<div id="exploring-the-variables" class="section level2">
-<h2><strong>Exploring the variables</strong></h2>
-<div id="summaries" class="section level3">
-<h3>Summaries</h3>
-<p>The <em>summary</em> command displays variable information. As each variable may have a different class, <em>summary</em> adapts and shows relevant information specific to the class and type. If is a numeric matrix, for instance, it provides Minimum, Mean and Maximum values, or if a factor it counts the number of occurrences per level.</p>
-<pre class="r"><code>summary(bumpus)</code></pre>
-<pre><code>##     subject      sex    age     survived             TL       
-##  Min.   : 1.00   f:49    :49   Mode :logical   Min.   :152.0  
-##  1st Qu.:17.75   m:87   a:59   FALSE:64        1st Qu.:157.0  
-##  Median :34.50          y:28   TRUE :72        Median :160.0  
-##  Mean   :34.62                                 Mean   :159.5  
-##  3rd Qu.:51.25                                 3rd Qu.:162.0  
-##  Max.   :72.00                                 Max.   :167.0  
-##        AE              WT             BHL              HL       
-##  Min.   :230.0   Min.   :22.60   Min.   :29.80   Min.   :16.74  
-##  1st Qu.:242.0   1st Qu.:24.57   1st Qu.:31.10   1st Qu.:18.23  
-##  Median :246.0   Median :25.55   Median :31.60   Median :18.62  
-##  Mean   :245.2   Mean   :25.52   Mean   :31.57   Mean   :18.59  
-##  3rd Qu.:249.0   3rd Qu.:26.50   3rd Qu.:32.02   3rd Qu.:19.01  
-##  Max.   :256.0   Max.   :31.00   Max.   :33.40   Max.   :19.81  
-##        FL             TTL              SW             SKL       
-##  Min.   :16.59   Min.   :25.68   Min.   :14.00   Min.   :18.64  
-##  1st Qu.:17.82   1st Qu.:28.24   1st Qu.:15.04   1st Qu.:20.55  
-##  Median :18.11   Median :28.78   Median :15.29   Median :21.36  
-##  Mean   :18.11   Mean   :28.79   Mean   :15.30   Mean   :21.33  
-##  3rd Qu.:18.57   3rd Qu.:29.52   3rd Qu.:15.52   3rd Qu.:21.98  
-##  Max.   :19.48   Max.   :31.24   Max.   :16.26   Max.   :23.55</code></pre>
-<p>Of course, you can call each column of the dataframe individually and check its contents and summary.</p>
-<pre class="r"><code>bumpus[,3]</code></pre>
-<pre><code>##   [1] a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-##  [36] a a a a a a a a a a a a a a y a y a y a y a y a y a y a y a y a y a y
-##  [71] y y   y   y   y   y   y   y   y   y   y   y   y   y   y   y   y      
-## [106]                                                              
-## Levels:  a y</code></pre>
-<pre class="r"><code>bumpus$age</code></pre>
-<pre><code>##   [1] a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a
-##  [36] a a a a a a a a a a a a a a y a y a y a y a y a y a y a y a y a y a y
-##  [71] y y   y   y   y   y   y   y   y   y   y   y   y   y   y   y   y      
-## [106]                                                              
-## Levels:  a y</code></pre>
-<pre class="r"><code>summary(bumpus$WT)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   22.60   24.57   25.55   25.52   26.50   31.00</code></pre>
-<p>On numeric variables the <em>summary</em> returns quantiles that might give us a good hint on how the data is distributed. But we might be interested on particular values instead.</p>
-<pre class="r"><code>max(bumpus$TL)</code></pre>
-<pre><code>## [1] 167</code></pre>
-<pre class="r"><code>min(bumpus$TL)</code></pre>
-<pre><code>## [1] 152</code></pre>
-<pre class="r"><code>range(bumpus$TL)</code></pre>
-<pre><code>## [1] 152 167</code></pre>
-<pre class="r"><code>mean(bumpus$TL)</code></pre>
-<pre><code>## [1] 159.5441</code></pre>
-<pre class="r"><code>quantile(bumpus$TL)</code></pre>
-<pre><code>##   0%  25%  50%  75% 100% 
-##  152  157  160  162  167</code></pre>
-<p><strong>Remember</strong> that all this values that are returned are vectors. You can store them on variables and use them to other calculations or plotting!</p>
-<p>If we want to know how many birds survived we could use a simple tabulating function of R:</p>
-<pre class="r"><code>table(bumpus$survived)</code></pre>
-<pre><code>## 
-## FALSE  TRUE 
-##    64    72</code></pre>
-<p>but we have to be careful when applied to continuous variables because results depend on all decimal values</p>
-<pre class="r"><code>table(bumpus$WT)</code></pre>
-<pre><code>## 
-## 22.6 22.8 23.2 23.3 23.4 23.5 23.6 23.7 23.8 23.9   24 24.1 24.2 24.3 24.4 
-##    2    1    3    2    1    1    2    1    1    3    3    2    6    3    2 
-## 24.5 24.6 24.7 24.8 24.9   25 25.1 25.3 25.4 25.5 25.6 25.7 25.8 25.9   26 
-##    1    7    4    6    5    4    3    1    1    3    3    5    2    3    8 
-## 26.1 26.2 26.3 26.4 26.5 26.6 26.7 26.8 26.9   27 27.1 27.3 27.4 27.5 27.6 
-##    5    3    3    1    5    2    3    2    6    2    1    1    1    2    1 
-## 27.7 27.9   28 28.3 28.6   29 30.5   31 
-##    1    1    1    2    1    1    1    1</code></pre>
-<pre class="r"><code>table(round(bumpus$WT,0))</code></pre>
-<pre><code>## 
-## 23 24 25 26 27 28 29 30 31 
-##  9 25 31 41 18  8  2  1  1</code></pre>
-<p>The best way to explore a continuous variable is by either using the functions above or directly plot a simple histogram.</p>
-<pre class="r"><code>hist(bumpus$WT)</code></pre>
-<p><img src="data:image/png;base64,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" width="672" /></p>
-<hr />
-</div>
-<div id="colorredtextchallenge-3" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
+<pre class="r"><code>bumpus &lt;- read.table(&quot;bumpus.txt&quot;, sep=&quot;\t&quot;, header=TRUE, na.strings = &quot;&quot;)</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>Can you use the survived table above to calculate survival frequency instead of counts?</li>
+<li>The table have counts, just divide by the number of rows</li>
 </ol>
-<hr />
-</div>
-<div id="averages" class="section level3">
-<h3>Averages</h3>
-<p>We already saw that we can get a mean of a particular column. But we might need the mean of all columns stored in a variable.</p>
-<pre class="r"><code>colMeans(bumpus)</code></pre>
-<pre><code>## Error in colMeans(bumpus): &#39;x&#39; must be numeric</code></pre>
-<p>However, that only works with numeric variables. Let’s select them and store as another variable:</p>
-<pre class="r"><code>bumpus.num &lt;- bumpus[, sapply(bumpus, is.numeric)]</code></pre>
-<p>We are using an indexing trick here. A vector returned by a function is used to filter the dataframe. The function <em>is.numeric</em> returns a logical value indicating if the variable is numeric or not. This is used within <em>sapply</em> that applies the function to all columns in the dataframe. The vector returned is a series of <em>TRUE</em> and <em>FALSE</em> values indicating which columns are numeric. That vector is of the same size as columns in bumpus, so we used it to get only columns that are numeric.</p>
-<p>Now we can apply the function to our new dataframe.</p>
-<pre class="r"><code>colMeans(bumpus.num)</code></pre>
+<pre class="r"><code>table(bumpus$survived)/nrow(bumpus)</code></pre>
+<pre><code>## 
+##     FALSE      TRUE 
+## 0.4705882 0.5294118</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r"><code>apply(bumpus.num, 2, mean)</code></pre>
 <pre><code>##   subject        TL        AE        WT       BHL        HL        FL 
 ##  34.61765 159.54412 245.19118  25.52500  31.57426  18.59131  18.11095 
 ##       TTL        SW       SKL 
 ##  28.79258  15.30294  21.33432</code></pre>
-<pre class="r"><code>rowMeans(bumpus.num)</code></pre>
+<pre class="r"><code>apply(bumpus.num, 1, mean)</code></pre>
 <pre><code>##   [1] 54.80676 56.48460 56.68778 57.50272 56.10144 57.29826 56.05492
 ##   [8] 57.32732 56.38284 58.24514 58.41418 57.67366 57.48908 57.13456
 ##  [15] 57.05396 57.16444 56.58758 56.87364 58.26448 57.56442 57.80856
@@ -608,295 +445,132 @@ summary {
 ## [120] 63.40306 61.39920 63.12002 60.94572 61.71016 62.39540 63.04778
 ## [127] 63.41004 63.65080 62.69732 61.50760 61.41982 62.96112 61.51316
 ## [134] 61.52458 64.39892 62.41762</code></pre>
-<p><strong>Note</strong> that the mean of the rows in this dataset is not very useful! We get means between different variables (different lengths and weights).</p>
-<hr />
-</div>
-<div id="colorredtextchallenge-4" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
-<ol start="5" style="list-style-type: decimal">
-<li>Use an <em>apply</em> function to get the same results.</li>
-</ol>
-<hr />
-<p>To explore our data or as a step in our analyses we often need a value like the mean per certain classes. We can get that also:</p>
-<pre class="r"><code>by(data=bumpus.num, INDICES=bumpus$sex, FUN=colMeans)</code></pre>
-<pre><code>## bumpus$sex: f
-##   subject        TL        AE        WT       BHL        HL        FL 
-##  55.42857 157.97959 241.32653  25.02857  31.45918  18.46632  18.08324 
-##       TTL        SW       SKL 
-##  28.86529  15.26384  20.83007 
-## -------------------------------------------------------- 
-## bumpus$sex: m
-##   subject        TL        AE        WT       BHL        HL        FL 
-##  22.89655 160.42529 247.36782  25.80460  31.63908  18.66170  18.12655 
-##       TTL        SW       SKL 
-##  28.75163  15.32496  21.61832</code></pre>
-</div>
-</div>
-<div id="variation-and-covariation" class="section level2">
-<h2>Variation and covariation</h2>
-<p>We might want the standard deviation of our variables. R provides and easy function for that:</p>
-<pre class="r"><code>sd(bumpus$WT)</code></pre>
-<pre><code>## [1] 1.475215</code></pre>
-<p>However it can be only applied on single variables.</p>
-<pre class="r"><code>sd(bumpus.num)</code></pre>
-<pre><code>## Error in is.data.frame(x): (list) object cannot be coerced to type &#39;double&#39;</code></pre>
-<p>The error is not directly related to the <em>sd</em> calculation, but relates to the fact that the data.frame is a list and the list cannot be coerced to a numeric object. We can coerce manually to a matrix:</p>
-<pre class="r"><code>sd(as.matrix(bumpus.num))</code></pre>
-<pre><code>## [1] 74.33966</code></pre>
-<p>If we use <em>sd</em> in a fully numeric matrix, we get a single value for the whole data (the matrix is being treated as a large vector).</p>
-<p>That’s when the usefulness of the <em>apply</em> family of functions becomes evident! Unlike means and sums that have special functions to estimate row- or column-wise, many other functions, like <em>sd</em>, do not have. We can still use it the same way in R:</p>
-<pre class="r"><code>apply(X=bumpus.num, MARGIN=2, FUN=sd)</code></pre>
-<pre><code>##    subject         TL         AE         WT        BHL         HL 
-## 19.9034926  3.5608315  5.5210234  1.4752150  0.7023765  0.5861866 
-##         FL        TTL         SW        SKL 
-##  0.6124777  1.0349102  0.3808930  1.0070907</code></pre>
-<p>we can also apply row-wise:</p>
-<pre class="r"><code>apply(X=bumpus.num, MARGIN=1, FUN=sd)</code></pre>
-<pre><code>##   [1] 78.36303 79.39257 79.83641 81.63391 78.51816 80.95576 78.95987
-##   [8] 80.17869 79.77379 81.15052 81.58332 80.27322 80.62415 80.38801
-##  [15] 79.93855 79.95447 79.93556 78.63980 80.70519 79.92591 80.33839
-##  [22] 80.91474 80.50801 81.31584 78.67351 80.15468 80.60512 81.48241
-##  [29] 79.25930 78.61870 80.70733 78.94051 79.05609 80.10866 79.35369
-##  [36] 81.41244 78.99403 79.21648 79.47579 80.86995 76.94350 80.33127
-##  [43] 80.28312 80.98519 77.10425 80.82656 80.60193 80.30981 78.95078
-##  [50] 79.56348 77.91075 75.71232 77.64531 76.98362 77.76843 79.17900
-##  [57] 77.94619 81.37852 80.24775 76.20608 77.98134 79.85518 79.02548
-##  [64] 81.71694 78.41075 81.29313 78.28895 78.51170 76.05389 80.98069
-##  [71] 77.63834 79.75355 75.95829 77.31051 76.15738 79.04058 76.95451
-##  [78] 78.99080 73.80374 79.09418 78.90982 75.70661 75.15128 79.87600
-##  [85] 77.01425 80.29874 77.95606 79.59280 73.57198 78.01924 76.50785
-##  [92] 77.99979 77.41720 78.78352 77.61462 77.85583 78.35889 78.33633
-##  [99] 76.48503 76.58779 79.56521 75.39490 73.24474 77.05900 75.89645
-## [106] 76.97149 75.43042 75.34454 74.56587 78.33077 76.38549 77.33463
-## [113] 75.08865 78.42853 75.39459 75.69980 75.20922 77.57851 74.66272
-## [120] 78.73692 75.53562 78.22252 74.56292 76.05275 77.39231 77.73919
-## [127] 77.70740 78.81821 77.08980 74.64625 75.18184 76.99043 74.98910
-## [134] 74.80817 77.98911 75.23494</code></pre>
-<hr />
-<div id="colorredtextchallenge-5" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
 <ol start="6" style="list-style-type: decimal">
-<li>Can you get the percentile 93% of every column in bumpus.num?</li>
+<li>Use quantile with apply with prob set to 0.93</li>
 </ol>
-<hr />
-<p>We have seen how get some descriptive statistics on each columns. We may be interested on relations between columns/variables:</p>
-<pre class="r"><code>cov(bumpus.num)</code></pre>
-<pre><code>##             subject          TL          AE         WT        BHL
-## subject 396.1490196 -16.7830065 -46.5411765 -6.2170370 -0.1602832
-## TL      -16.7830065  12.6795207  13.5840959  3.0670370  1.1741068
-## AE      -46.5411765  13.5840959  30.4816993  4.6314815  1.9353268
-## WT       -6.2170370   3.0670370   4.6314815  2.1762593  0.5379815
-## BHL      -0.1602832   1.1741068   1.9353268  0.5379815  0.4933328
-## HL       -0.6632333   1.0115508   2.1940952  0.4487145  0.2565013
-## FL        0.3750789   0.9698705   1.9554680  0.4013012  0.2651766
-## TTL       2.0640682   1.3915631   3.0378926  0.6938292  0.4247786
-## SW       -0.2051092   0.5907160   0.9124383  0.2649267  0.1430627
-## SKL      -5.7952341   1.7962310   3.2257474  0.7616096  0.3468640
-##                 HL        FL       TTL         SW        SKL
-## subject -0.6632333 0.3750789 2.0640682 -0.2051092 -5.7952341
-## TL       1.0115508 0.9698705 1.3915631  0.5907160  1.7962310
-## AE       2.1940952 1.9554680 3.0378926  0.9124383  3.2257474
-## WT       0.4487145 0.4013012 0.6938292  0.2649267  0.7616096
-## BHL      0.2565013 0.2651766 0.4247786  0.1430627  0.3468640
-## HL       0.3436147 0.2946099 0.4525847  0.1143215  0.3238678
-## FL       0.2946099 0.3751289 0.5129822  0.1216011  0.2798430
-## TTL      0.4525847 0.5129822 1.0710392  0.1808130  0.4002816
-## SW       0.1143215 0.1216011 0.1808130  0.1450794  0.1473034
-## SKL      0.3238678 0.2798430 0.4002816  0.1473034  1.0142317</code></pre>
-<pre class="r"><code>cor(bumpus.num)</code></pre>
-<pre><code>##             subject         TL         AE         WT         BHL
-## subject  1.00000000 -0.2368040 -0.4235342 -0.2117380 -0.01146539
-## TL      -0.23680401  1.0000000  0.6909709  0.5838648  0.46944658
-## AE      -0.42353419  0.6909709  1.0000000  0.5686500  0.49907375
-## WT      -0.21173802  0.5838648  0.5686500  1.0000000  0.51920877
-## BHL     -0.01146539  0.4694466  0.4990738  0.5192088  1.00000000
-## HL      -0.05684616  0.4846190  0.6779536  0.5188943  0.62299365
-## FL       0.03076827  0.4447051  0.5782836  0.4441451  0.61641736
-## TTL      0.10020562  0.3776146  0.5316798  0.4544589  0.58437277
-## SW      -0.02705533  0.4355363  0.4338913  0.4714846  0.53475344
-## SKL     -0.28911665  0.5008898  0.5801525  0.5126353  0.49036631
-##                  HL         FL       TTL          SW        SKL
-## subject -0.05684616 0.03076827 0.1002056 -0.02705533 -0.2891167
-## TL       0.48461896 0.44470505 0.3776146  0.43553633  0.5008898
-## AE       0.67795361 0.57828357 0.5316798  0.43389133  0.5801525
-## WT       0.51889431 0.44414508 0.4544589  0.47148457  0.5126353
-## BHL      0.62299365 0.61641736 0.5843728  0.53475344  0.4903663
-## HL       1.00000000 0.82058033 0.7460385  0.51202258  0.5486094
-## FL       0.82058033 1.00000000 0.8092996  0.52124802  0.4536862
-## TTL      0.74603851 0.80929959 1.0000000  0.45869505  0.3840558
-## SW       0.51202258 0.52124802 0.4586951  1.00000000  0.3840089
-## SKL      0.54860944 0.45368622 0.3840558  0.38400890  1.0000000</code></pre>
-<hr />
-</div>
-<div id="colorredtextchallenge-6" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
+<pre class="r"><code>apply(X=bumpus.num, 1, quantile, probs=0.93)</code></pre>
+<pre><code>##   [1] 186.19 192.75 191.45 194.04 187.56 193.56 187.67 193.08 189.67 195.19
+##  [11] 195.04 193.45 191.78 193.71 191.56 192.45 190.93 190.34 192.78 193.08
+##  [21] 192.93 194.04 193.93 195.67 191.34 193.82 193.30 197.19 191.56 191.34
+##  [31] 193.15 191.71 191.56 193.82 193.60 198.19 190.93 191.56 192.56 195.67
+##  [41] 186.71 194.67 195.56 197.45 187.82 197.56 196.82 197.08 192.19 192.93
+##  [51] 189.82 185.60 190.34 188.34 189.56 195.23 190.45 198.30 194.41 186.97
+##  [61] 190.19 195.82 192.82 199.30 192.19 199.56 192.19 192.45 185.56 198.56
+##  [71] 189.30 194.30 186.45 188.93 187.08 194.45 190.34 194.45 181.60 193.30
+##  [81] 193.30 185.97 185.34 195.67 189.56 196.67 194.60 196.19 181.86 192.97
+##  [91] 190.49 192.19 191.97 193.30 190.82 190.93 191.56 191.67 187.56 189.45
+## [101] 195.30 185.34 180.86 188.93 185.82 189.71 185.19 185.71 183.71 194.82
+## [111] 187.56 192.23 185.97 194.08 186.97 188.23 186.08 192.08 184.60 195.08
+## [121] 187.60 193.45 184.08 188.34 191.08 192.71 192.45 195.08 189.56 185.86
+## [131] 185.97 189.82 184.45 184.97 193.71 187.49</code></pre>
 <ol start="7" style="list-style-type: decimal">
-<li>Try to get the spearman correlation matrix.</li>
+<li>Change the default argument</li>
 </ol>
-<hr />
-</div>
-</div>
-<div id="tabulating" class="section level2">
-<h2><strong>Tabulating</strong></h2>
-<p>We already saw an example of the <em>table</em> command.</p>
-<pre class="r"><code>age.table &lt;- table(bumpus$age)</code></pre>
-<hr />
-<div id="colorredtextchallenge-7" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
+<pre class="r"><code>cor(bumpus.num, method=&quot;spearman&quot;)</code></pre>
+<pre><code>##             subject         TL         AE         WT         BHL
+## subject  1.00000000 -0.2271780 -0.4147303 -0.2267631 -0.02537445
+## TL      -0.22717799  1.0000000  0.6546818  0.5575055  0.45449085
+## AE      -0.41473031  0.6546818  1.0000000  0.5385844  0.48442992
+## WT      -0.22676308  0.5575055  0.5385844  1.0000000  0.49926170
+## BHL     -0.02537445  0.4544908  0.4844299  0.4992617  1.00000000
+## HL      -0.07034053  0.4508939  0.6617025  0.4941162  0.61901174
+## FL       0.03025881  0.4042347  0.5607366  0.3838259  0.58494632
+## TTL      0.11784725  0.3148208  0.4869944  0.3888463  0.54517756
+## SW      -0.04372979  0.4082786  0.3825361  0.4329217  0.49548653
+## SKL     -0.27890528  0.4925611  0.5558032  0.5048398  0.50286140
+##                  HL         FL       TTL          SW        SKL
+## subject -0.07034053 0.03025881 0.1178473 -0.04372979 -0.2789053
+## TL       0.45089388 0.40423468 0.3148208  0.40827856  0.4925611
+## AE       0.66170246 0.56073662 0.4869944  0.38253612  0.5558032
+## WT       0.49411625 0.38382590 0.3888463  0.43292172  0.5048398
+## BHL      0.61901174 0.58494632 0.5451776  0.49548653  0.5028614
+## HL       1.00000000 0.79188064 0.7067160  0.42617038  0.5349848
+## FL       0.79188064 1.00000000 0.7604438  0.46043668  0.4316819
+## TTL      0.70671597 0.76044379 1.0000000  0.39199013  0.3553765
+## SW       0.42617038 0.46043668 0.3919901  1.00000000  0.3413482
+## SKL      0.53498483 0.43168190 0.3553765  0.34134824  1.0000000</code></pre>
 <ol start="8" style="list-style-type: decimal">
-<li>What value does this table hold?</li>
+<li><p>The counts of young and adults. It might have also counts of an empty string if NAs were not properly defined in the <em>read.table</em> before.</p></li>
+<li><p>The function needs and array/matrix like object and not a data.frame</p></li>
 </ol>
-<hr />
-<p>We can check the proportion in our table.</p>
-<pre class="r"><code>prop.bumpus &lt;- prop.table(bumpus.num)
-head(prop.bumpus)</code></pre>
-<pre><code>##        subject          TL          AE           WT          BHL
-## 1 1.228389e-05 0.001891718 0.002960416 0.0003009552 0.0003832572
-## 2 1.228389e-05 0.002026841 0.002948133 0.0003255230 0.0003808005
-## 3 2.456777e-05 0.001965422 0.003009552 0.0003206094 0.0003930843
-## 4 2.456777e-05 0.001965422 0.003095539 0.0003304365 0.0003783437
-## 5 3.685166e-05 0.001904002 0.002984984 0.0003304365 0.0003758869
-## 6 3.685166e-05 0.001977706 0.003058688 0.0003144675 0.0003967695
-##             HL           FL          TTL           SW          SKL
-## 1 0.0002143514 0.0002084231 0.0003188749 0.0001831503 0.0002589689
-## 2 0.0002302639 0.0002196555 0.0003416517 0.0001890785 0.0002642731
-## 3 0.0002296399 0.0002212156 0.0003460199 0.0001906385 0.0002627130
-## 4 0.0002296399 0.0002212156 0.0003681726 0.0001878304 0.0002624010
-## 5 0.0002287038 0.0002196555 0.0003591243 0.0001878304 0.0002639611
-## 6 0.0002318239 0.0002240237 0.0003519481 0.0001878304 0.0002583449</code></pre>
-<p>However, as default, the <em>prop.table</em> returns the proportion to the sum of the whole table:</p>
-<pre class="r"><code>sum(prop.bumpus)</code></pre>
-<pre><code>## [1] 1</code></pre>
-<p>Using the help of the function (<em>?prop.table</em>) we could check if there is an argument to the function that allows to calculate the proportions column wise.</p>
-<pre class="r"><code>prop.bumpus &lt;- prop.table(bumpus.num, margin=2)</code></pre>
-<pre><code>## Error in margin.table(x, margin): &#39;x&#39; is not an array</code></pre>
-<hr />
-</div>
-<div id="colorredtextchallenge-8" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
-<ol start="9" style="list-style-type: decimal">
-<li>Correct the error!</li>
-<li>Check column sums to see if the results is as expected.</li>
+<pre class="r"><code>prop.bumpus &lt;- prop.table(as.matrix(bumpus.num), margin=2)</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>All columns must sum to 1 to be correct.</li>
 </ol>
-<hr />
-</div>
-<div id="cross-tabulation" class="section level3">
-<h3>Cross-tabulation</h3>
-<p>R has many options to build contingency tables. One of the commands is, as already seen <em>table</em>:</p>
-<pre class="r"><code>sex.sur &lt;- bumpus[,c(&quot;sex&quot;, &quot;survived&quot;)]
-head(sex.sur)</code></pre>
-<pre><code>##   sex survived
-## 1   m     TRUE
-## 2   m    FALSE
-## 3   m    FALSE
-## 4   m     TRUE
-## 5   m     TRUE
-## 6   m    FALSE</code></pre>
-<pre class="r"><code>table(sex.sur)</code></pre>
-<pre><code>##    survived
-## sex FALSE TRUE
-##   f    28   21
-##   m    36   51</code></pre>
-<p>We can relate two variables with cross tabulation to get counts of items to the corresponding classes. The application makes more sense with categorical data (factors, logical) or with a classified continuous variable.</p>
-<hr />
-</div>
-<div id="colorredtextchallenge-9" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
+<pre class="r"><code>colSums(prop.bumpus)</code></pre>
+<pre><code>## subject      TL      AE      WT     BHL      HL      FL     TTL      SW 
+##       1       1       1       1       1       1       1       1       1 
+##     SKL 
+##       1</code></pre>
 <ol start="11" style="list-style-type: decimal">
-<li>How could you get frequencies (equivalent to <em>prop.table</em>) using the last results?</li>
-<li>Repeat for the columns ‘age’ and ‘sex’. Explain the results.</li>
-<li>What do you expect if you add a third column (age, sex, survived)?</li>
+<li>Just divide by the total number of individuals.</li>
 </ol>
-<hr />
-<p>We have other ways to get similar tables in R. A very useful function is <em>xtabs</em> that allows a formula interface for designing the table.</p>
-<pre class="r"><code>xtabs(~ sex + survived, bumpus)</code></pre>
+<pre class="r"><code>table(sex.sur)/nrow(sex.sur)</code></pre>
 <pre><code>##    survived
-## sex FALSE TRUE
-##   f    28   21
-##   m    36   51</code></pre>
-<p>The formula with the ~ notation defines the variables that we want to cross tabulate. Because we do not have anything at the left of the ~, it counts the items in each combination of categories. We can use variable instead of counts:</p>
-<pre class="r"><code>xtabs(TL ~ survived + sex, bumpus)</code></pre>
-<pre><code>##         sex
-## survived    f    m
-##    FALSE 4436 5835
-##    TRUE  3305 8122</code></pre>
-<hr />
-</div>
-<div id="colorredtextchallenge-10" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
+## sex     FALSE      TRUE
+##   f 0.2058824 0.1544118
+##   m 0.2647059 0.3750000</code></pre>
+<ol start="12" style="list-style-type: decimal">
+<li>In this case we have to deal with missing data.</li>
+</ol>
+<pre class="r"><code>agesex &lt;- bumpus[,c(&quot;age&quot;, &quot;sex&quot;)]
+agesex &lt;- na.exclude(agesex)
+table(agesex)/nrow(agesex)</code></pre>
+<pre><code>##    sex
+## age         f         m
+##   a 0.0000000 0.6781609
+##   y 0.0000000 0.3218391</code></pre>
+<ol start="13" style="list-style-type: decimal">
+<li>It deals with a third dimension by treating as array</li>
+</ol>
+<pre class="r"><code>agesexsur &lt;- bumpus[,c(&quot;age&quot;, &quot;sex&quot;, &quot;survived&quot;)]
+agesexsur &lt;- na.exclude(agesexsur)
+table(agesexsur)</code></pre>
+<pre><code>## , , survived = FALSE
+## 
+##    sex
+## age  f  m
+##   a  0 24
+##   y  0 12
+## 
+## , , survived = TRUE
+## 
+##    sex
+## age  f  m
+##   a  0 35
+##   y  0 16</code></pre>
 <ol start="14" style="list-style-type: decimal">
-<li>Calculate the average TL per survived individual and sex</li>
+<li>Just divide by the sum of TL</li>
 </ol>
-<hr />
-</div>
-</div>
-<div id="sorting-and-ordering-data" class="section level2">
-<h2><strong>Sorting and ordering data</strong></h2>
-<p>Sorting and ordering are two different but related concept in R. The <em>sort</em> function returns a vector of the same size of the original but with the elements sorted by increasing order.</p>
-<p>Using the TL variable as example:</p>
-<pre class="r"><code>tl &lt;- bumpus$TL
-tl</code></pre>
-<pre><code>##   [1] 154 165 160 160 155 161 154 162 156 163 161 162 157 163 159 161 158
-##  [18] 160 158 162 160 160 161 162 161 162 160 165 159 161 158 161 159 162
-##  [35] 164 166 158 159 160 162 156 161 163 166 156 165 165 166 160 160 158
-##  [52] 156 160 158 157 166 159 165 160 157 158 164 161 166 160 167 160 161
-##  [69] 153 166 156 161 155 156 156 163 160 163 152 160 160 156 155 162 157
-##  [86] 163 165 164 153 163 162 160 162 160 159 158 159 158 155 158 162 155
-## [103] 152 156 154 159 153 155 153 163 155 163 156 163 157 159 155 161 155
-## [120] 164 158 162 153 158 160 162 161 164 157 157 156 158 153 155 163 159</code></pre>
-<pre class="r"><code>sort(tl)</code></pre>
-<pre><code>##   [1] 152 152 153 153 153 153 153 153 154 154 154 155 155 155 155 155 155
-##  [18] 155 155 155 155 156 156 156 156 156 156 156 156 156 156 156 157 157
-##  [35] 157 157 157 157 157 158 158 158 158 158 158 158 158 158 158 158 158
-##  [52] 158 159 159 159 159 159 159 159 159 159 159 160 160 160 160 160 160
-##  [69] 160 160 160 160 160 160 160 160 160 160 160 160 160 161 161 161 161
-##  [86] 161 161 161 161 161 161 161 161 161 162 162 162 162 162 162 162 162
-## [103] 162 162 162 162 162 163 163 163 163 163 163 163 163 163 163 163 164
-## [120] 164 164 164 164 165 165 165 165 165 165 166 166 166 166 166 166 167</code></pre>
-<p>We might not be interested in the sorted values but in other information in the table sorted by the TL. As example, let’s give names to each sample and try to get the sorted names.</p>
-<pre class="r"><code>names(tl) &lt;- paste(&quot;sample&quot;, 1:nrow(bumpus), sep&quot;_&quot;)
-tl
-sorted.tl &lt;- sort(tl)
-sorted.tl
-names(sorted.tl)</code></pre>
-<pre><code>## Error: &lt;text&gt;:1:49: unexpected string constant
-## 1: names(tl) &lt;- paste(&quot;sample&quot;, 1:nrow(bumpus), sep&quot;_&quot;
-##                                                     ^</code></pre>
-<p>This is much code for a very common task in analysing data… R does provide a easier way. The difference between <em>sort</em> and <em>order</em> is on the values the function returns: the <em>sort</em> returns the sorted values, the <em>order</em> returns the <strong>indices</strong> of the sorted values in the correct position.</p>
-<pre class="r"><code>order(bumpus$TL)</code></pre>
-<pre><code>##   [1]  79 103  69  89 107 109 123 133   1   7 105   5  73  83  99 102 108
-##  [18] 111 117 119 134   9  41  45  52  71  74  75  82 104 113 131  13  55
-##  [35]  60  85 115 129 130  17  19  31  37  51  54  61  96  98 100 121 124
-##  [52] 132  15  29  33  38  57  95  97 106 116 136   3   4  18  21  22  27
-##  [69]  39  49  50  53  59  65  67  77  80  81  92  94 125   6  11  16  23
-##  [86]  25  30  32  42  63  68  72 118 127   8  12  20  24  26  34  40  84
-## [103]  91  93 101 122 126  10  14  43  76  78  86  90 110 112 114 135  35
-## [120]  62  88 120 128   2  28  46  47  58  87  36  44  48  56  64  70  66</code></pre>
-<hr />
-<div id="colorredtextchallenge-11" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
+<pre class="r"><code>xtabs(TL ~ survived + sex, bumpus)/xtabs(~ sex + survived, bumpus)</code></pre>
+<pre><code>##         sex
+## survived         f         m
+##    FALSE 158.42857 277.85714
+##    TRUE   91.80556 159.25490</code></pre>
 <ol start="15" style="list-style-type: decimal">
-<li>Sort the bumpus data.frame based on the Total Length (TL) column</li>
+<li>Use <em>order</em> as indexing filter.</li>
 </ol>
-<hr />
-</div>
-</div>
-<div id="merging-tables" class="section level2">
-<h2><strong>Merging tables</strong></h2>
-<p>Very frequently we have the need to merge information from two different databases. For instance, we might have sample measurements in one file, dna sequencing data in another, and spatial locations in another. All databases might be related by sample code but might have different samples (one sequenced sample, might not have measurements, etc) or have different orders. To proceed with our analysis we need all data together.</p>
-<p>In this example we have (randomly created) coordinates for each sample that we read from a <a href="https://raw.githubusercontent.com/PhenoEvo/phenoevo.github.io/master/Intro2R/data/coords.txt">file</a>.</p>
-<pre class="r"><code>coords &lt;- read.table(&quot;coords.txt&quot;, sep=&#39;;&#39;, header=TRUE)
-head(coords)</code></pre>
-<pre><code>##   subject   lat   lon
-## 1       1  1.92 -1.30
-## 2       2 -1.62 -1.64
-## 3       3  0.61  0.52
-## 4       4  0.48  0.32
-## 5       5  0.56  0.50
-## 6       6  0.43 -0.52</code></pre>
-<p>In this case, the <em>subject</em> column exists in both tables and <strong>we know</strong> that is the column that establishes a relation between the two tables.</p>
-<pre class="r"><code>bumpus2 &lt;- merge(bumpus, coords)
-head(bumpus2)</code></pre>
+<pre class="r"><code>sorted &lt;- bumpus[order(bumpus$TL),]
+head(sorted)</code></pre>
+<pre><code>##     subject sex  age survived  TL  AE   WT  BHL      HL      FL     TTL
+## 79       40   f &lt;NA&gt;    FALSE 152 232 23.2 30.3 17.1704 17.3482 26.6192
+## 103      52   f &lt;NA&gt;    FALSE 152 230 22.8 30.4 17.3228 16.8656 26.4668
+## 69       35   m    a     TRUE 153 241 24.7 32.2 18.4912 17.2720 27.7368
+## 89       45   f &lt;NA&gt;    FALSE 153 231 23.9 30.1 17.2720 16.8148 26.4668
+## 107      54   f &lt;NA&gt;     TRUE 153 240 25.1 31.0 18.3896 18.1102 28.5242
+## 109      55   f &lt;NA&gt;     TRUE 153 236 23.2 30.9 17.7292 17.2212 28.7528
+##          SW     SKL
+## 79  14.9860 19.8120
+## 103 13.9954 18.6436
+## 69  15.0368 22.4536
+## 89  15.0368 19.8374
+## 107 14.8590 20.6248
+## 109 15.1384 20.1930</code></pre>
+<ol start="16" style="list-style-type: decimal">
+<li>check the arguments to merge</li>
+</ol>
+<pre class="r"><code>bumpus4 &lt;- merge(bumpus, coords, by.x=&quot;subject&quot;, by.y=&quot;sub&quot;, all=TRUE)
+head(bumpus4)</code></pre>
 <pre><code>##   subject sex age survived  TL  AE   WT  BHL      HL      FL     TTL
 ## 1       1   m   a     TRUE 154 241 24.5 31.2 17.4498 16.9672 25.9588
 ## 2       1   m   a    FALSE 165 240 26.5 31.0 18.7452 17.8816 27.8130
@@ -911,29 +585,8 @@ head(bumpus2)</code></pre>
 ## 4 15.5194 21.3868 -1.62 -1.64
 ## 5 15.2908 21.4884  0.61  0.52
 ## 6 15.2908 21.0312  0.61  0.52</code></pre>
-<p>Notice that the subject is repeated in the bumpus table. The <em>merge</em> also repeated the coordinate if the sample was the same.</p>
-<p>Let’s force the coordinates table to have different column names that do not match with bumpus.</p>
-<pre class="r"><code>colnames(coords) &lt;- c(&quot;sub&quot;, &quot;lat&quot;, &quot;lon&quot;)
-head(coords)</code></pre>
-<pre><code>##   sub   lat   lon
-## 1   1  1.92 -1.30
-## 2   2 -1.62 -1.64
-## 3   3  0.61  0.52
-## 4   4  0.48  0.32
-## 5   5  0.56  0.50
-## 6   6  0.43 -0.52</code></pre>
-<p>Now we have to explicitly say to <em>merge</em> which columns we want to use to establish a relation between tables.</p>
-<pre class="r"><code>bumpus3 &lt;- merge(bumpus, coords, by.x=&quot;subject&quot;, by.y=&quot;sub&quot;)</code></pre>
-<hr />
-<div id="colorredtextchallenge-12" class="section level3">
-<h3><span class="math inline">\(\color{red}{\text{CHALLENGE}}\)</span></h3>
-<ol start="16" style="list-style-type: decimal">
-<li>Check the number of rows of bumpus2. Why is it different? Can you force <em>merge</em> with coordinates to return the same number of rows as the original bumpus?</li>
-</ol>
-<hr />
-<p><a href="3.2_reviewing_solutions.html">Solutions here.</a></p>
-</div>
-</div>
+<pre class="r"><code>dim(bumpus4)</code></pre>
+<pre><code>## [1] 136  15</code></pre>
 
 
 
