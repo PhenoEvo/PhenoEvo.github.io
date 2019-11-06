@@ -7,7 +7,6 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -70,7 +69,9 @@ h6 {
 </style>
 
 
+</head>
 
+<body>
 
 <style type = "text/css">
 .main-container {
@@ -84,6 +85,7 @@ code {
 }
 img {
   max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -188,6 +190,8 @@ $(document).ready(function () {
 });
 </script>
 
+<div class="container-fluid main-container">
+
 <!-- tabsets -->
 
 <style type="text/css">
@@ -244,17 +248,20 @@ $(document).ready(function () {
 }
 </style>
 
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
 <!-- code folding -->
 
-
-
-
-</head>
-
-<body>
-
-
-<div class="container-fluid main-container">
 
 
 
@@ -314,7 +321,7 @@ $(document).ready(function () {
 <p>2.4. Practical session: bring and load your own data</p>
 <p><a href="https://phenoevo.github.io/Intro2R/lectures/3.1_Data-indexing.html">3.1. Data indexing</a></p>
 <p><a href="https://phenoevo.github.io/Intro2R/lectures/3.2_reviewing.html">3.2. Reviewing and tabulating your data</a></p>
-<p>3.3. String manipulation</p>
+<p><a href="https://phenoevo.github.io/Intro2R/lectures/3.3_String_manipulation.html">3.3. String manipulation</a></p>
 <p>3.4. Plotting</p>
 <p>3.5. Practice session: plots, indexing and data</p>
 <p>4.1. Control functions I: conditionals</p>
@@ -341,23 +348,6 @@ $(document).ready(function () {
 
 
 </script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
-<!-- code folding -->
-
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
