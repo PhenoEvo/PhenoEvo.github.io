@@ -1,0 +1,591 @@
+---
+title: "Plotting"
+author: "A. Jesús Muñoz-Pajares, A. Kaliontzopoulou, P. Tarroso"
+date: "4-8 NOVEMBER 2019"
+output: html_document
+---
+
+### **General view**
+
+To generate a basic point plot you can use the plot() function.
+
+```{r eval=TRUE}
+plot(c(1:2))
+```
+
+This function perform a plot with two dimensions (Y vs. X). By default, the first vector provided will be considered X and the second Y. If only one vector is provided, Y will be the values of the vector and X their indices. Check this examples:
+
+```{r eval=TRUE}
+# Plot with x and y ...
+plot(c(5:7),c(2,4,5))
+# ...	This is the same than:
+plot(x=c(5:7),y=c(2,4,5))
+# ...	But this is not:
+plot(y=c(5:7),x=c(2,4,5))
+
+# Plot with only one vector:
+plot(c(5:7))
+```
+
+
+
+If we make another plot, the previous one is removed
+```{r eval=TRUE}
+plot(c(1:2))
+plot(c(1:3))
+```
+
+But you can open additional devices using the following functions, some of them system-dependent:
+
+```{r eval=FALSE}
+windows() 	#Windows
+X11() 		#Unix
+quartz() 	#Mac
+dev.new()	#All platforms
+```
+
+These functions accept arguments to customize the device. For example, width and heigth
+
+```{r eval=FALSE}
+dev.new(width=1,height=1)
+dev.new(width=5,height=3)
+```
+
+Using these functions, we can do a second plot maintaining the former
+```{r eval=TRUE}
+plot(1:10)
+```
+```{r eval=FALSE}
+dev.new()
+```
+
+```{r eval=TRUE}
+plot(c(2,4,3,8))
+```
+
+If you want to mantain the second plot and add some points on it, use points()
+
+```{r eval=FALSE}
+points(x=3.5,y=2.5)
+```
+
+```{r eval=TRUE,echo=FALSE}
+plot(c(2,4,3,8))
+points(x=3.5,y=2.5)
+```
+
+If you have several devs, the points will be added to the "ACTIVE" one. You can select dev using dev.set (Note the change in ACTIVE-INACTIVE status):
+
+```{r eval=FALSE}
+dev.set(1)
+points(1.4,2)
+```
+
+```{r eval=TRUE,echo=FALSE}
+plot(1:10)
+points(1.4,2)
+```
+
+You can close a device by clicking "X" or using the command:
+
+```{r eval=FALSE}
+ dev.off()
+``` 
+ 
+
+### **Areas in a plot:**
+
+
+Every plot has different areas (the plot itself, the margins, the axes, the axis labels, the box, the title,...). You can plot and customize every of this areas using the proper function (text(), mtext(), axis(), box(), main(),...):
+
+```{r eval=TRUE, echo=FALSE}
+par(bg = "bisque")
+plot(c(1:2),col="blue",yaxt="n",xaxt="n",xlab="", ylab="",main="Main title", col.main="red")
+ rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = "lightblue")
+points(c(1:2),col="blue",pch=16,yaxt="n")
+box("plot", col="blue")
+text(x=1.5,y=1.5,label="Plot Area",col="blue",cex=3.5)
+axis(col="blue",side=1,col.ticks="blue",col.axis="blue")
+axis(col="blue",side=2,col.ticks="blue",col.axis="blue")
+mtext("Xlab", side=1, line=3, col="red",cex=1.5)
+mtext("Ylab", side=2, line=2.5, col="red",cex=1.5)
+mtext("moreText on side=1",  at=1.1, line=2, col="orange",side=1)
+mtext("moreText on side=2",  at=1.1, line=2, col="orange", side=2)
+mtext("moreText on side=3",  at=1.1, line=2, col="orange", side=3)
+mtext("moreText on side=3",  at=1.3, line=1, col="orange", side=3)
+mtext("moreText on side=3",  at=1.5, line=3, col="orange", side=3)
+mtext("moreText on side=3",  at=1.7, line=0.1, col="orange", side=3)
+mtext("moreText on side=3",  at=1.7, line=2.2, col="orange", side=3)
+mtext("moreText on side=3",  at=1.9, line=0.8, col="orange", side=3)
+mtext("moreText on side=4",  at=1.1, line=0.2, col="orange", side=4)
+```
+ 
+ 
+### **Dividing devices to show more than one plot at the same time**
+
+Use layout() to divide the device and layout.show() to see the resulting layout.
+
+```{r eval=TRUE, echo=TRUE}
+layout(1:2)
+layout.show(2)
+plot(1:10)
+plot(1:3)
+```
+
+ If you want right-left instead of top-bottom or a more complex layout, use set a matrix accordingly.
+
+```{r eval=TRUE, echo=TRUE}
+layout(matrix(1:2,ncol=2))
+layout.show(2)
+plot(1:10)
+plot(1:3)
+# Larger matrices: 3 columns and 2 rows:
+layout(matrix(1:6,ncol=3))
+layout.show(6)
+# More complex matrices: 3 columns and 2 rows:
+M<-matrix(rep(c(rep(1,5),c(2,2,3,3,4)),5),nrow=5,byrow=T)
+M
+layout(M)
+layout.show(4)
+```
+
+# EXERCISE: CREATE A LAYOUT AS THE ONE SHOWN IN FIGURE
+```{r eval=TRUE, echo=FALSE}
+MAT<-matrix(c(
+1,1,1,1,1,1,
+1,2,2,1,1,1,
+1,2,2,1,1,1,
+1,1,1,3,3,1,
+1,1,1,3,3,1,
+1,1,1,1,1,1),nrow=6)
+layout(MAT)
+
+plot(1:10)
+plot(1:3)
+plot(8:10,8:10)
+```
+
+
+## **Saving your plot**
+There are several ways. You can save the plot in the ACTIVE device as a pdf file using:
+
+```{r eval=FALSE, echo=TRUE}
+dev.copy2pdf(file="my.plot_layout.pdf")
+```
+
+And there are other functions for saving the ACTIVE device using other formats:
+```{r eval=FALSE, echo=TRUE}
+win.metafile("mygraph.wmf") 	#windows metafile
+png("mygraph.png") 	#png file
+jpeg("mygraph.jpg") 	#jpeg file
+bmp("mygraph.bmp") 	#bmp file
+postscript("mygraph.ps") 	#postscript file 
+```
+
+Alternatively, you can produce the plot directly to a file. For example, using the pdf() function will generate a pdf file in your computer. From that point, all the plotting functions will be applied to this file. You will not be able to open the file (and see your plot) unless you close the conection between the R and the file using dev.off(). Here is an example:
+
+```{r eval=FALSE, echo=TRUE}
+# first create the pdf and then plot "on it"
+
+pdf("mygraph.pdf") 
+plot(1:2)
+# Nothing happens, but a file is created.
+# However, you can't open it
+dev.off()
+# Now you can
+```
+
+
+## **Plot types and arguments**
+
+There are multiple functions to perform different plots. Many of them share arguments to set particular issues -such as colors (col), size (cex),..- and other arguments are specific of every function.
+
+In this section we briefly describe some of the functions (and few of their argruments) to perform plots.
+
+# *Scatterplots*
+Let's explore some options of plots using the bumpus dataset.
+The first step is to import and visualize the data:
+
+```{r eval=TRUE, echo=TRUE}
+bumpus <- read.csv("bumpus.csv")
+str(bumpus)
+```
+
+As mentioned above, if only one variable is selected, it is plotted as Y and X is an index
+```{r eval=TRUE, echo=TRUE}
+plot(bumpus$TL)
+```
+
+Logical are coerced
+```{r eval=TRUE, echo=TRUE}
+plot(bumpus$survived)
+```
+
+With two variables:
+
+```{r eval=TRUE, echo=TRUE}
+layout(matrix(1:2,ncol=2))
+plot(bumpus$TL, bumpus$AE)
+# Note that the order is X Y
+plot(bumpus$AE~bumpus$TL)
+# Note that the order is Y X
+```
+
+The scatterplot also works with large dataframes:
+```{r eval=TRUE, echo=TRUE}
+# The entire bumpus dataset
+plot(bumpus)
+
+# A subset
+plot(bumpus[,c("TL", "AE", "BHL", "SKL")])
+```
+```{r eval=TRUE, echo=TRUE}
+# This is exactly the same
+pairs(~TL+AE+BHL+SKL, data=bumpus)
+```
+
+
+# *DENSITY PLOTS*
+See ?hist for details.
+
+```{r eval=TRUE, echo=TRUE}
+
+hist(bumpus$TL)
+
+
+hist(bumpus$TL, main="Histogram of total length", xlab="Total length")
+
+hist(bumpus$TL, main="Histogram of total length", xlab="Total length", 
+     breaks=20)
+```
+
+#*BOXPLOTS* 
+See ?boxplot for details
+
+```{r eval=TRUE, echo=TRUE}
+boxplot(bumpus)
+boxplot(bumpus[,7:13])
+boxplot(bumpus$TL)
+boxplot(bumpus$TL~bumpus$survived)
+
+
+boxplot(bumpus$TL~bumpus$survived, main="Boxplot of TL in relation to survival", horizontal=T)
+```
+
+```{r eval=TRUE, echo=TRUE}
+bx.bumpus <- boxplot(bumpus$TL~bumpus$survived, plot=F)
+bx.bumpus
+bxp(bx.bumpus, main="Boxplot of TL in relation to survival", horizontal=T)
+```
+
+
+#*BARPLOTS* 
+See ?barplot for details
+
+```{r eval=TRUE, echo=TRUE}
+survived <- table(bumpus$survived)
+survived
+survived <- survived / nrow(bumpus)
+survived
+
+barplot(survived)
+barplot(survived, horiz=T)
+
+
+survivedbysex <- table(bumpus$sex, bumpus$survived) /  nrow(bumpus)
+survivedbysex 
+barplot(survivedbysex, main="Survived birds by sex", col=c("red", "blue"))
+barplot(survivedbysex, main="Survived birds by sex", col=c("red", "blue"), 
+        beside=T)
+```
+
+#*PIECHARTS*
+See ?pie for details
+
+```{r eval=TRUE, echo=TRUE}
+sex.surv <- paste(bumpus$sex, bumpus$survived, sep="_")
+fr.bumpus <- table(sex.surv)/length(sex.surv)
+pie(fr.bumpus)
+pie(fr.bumpus, 
+    labels=c("F - died", "F - lived", "M - died", "M- lived"),        
+    main="Percentages of survival by sex", 
+    col=c("darkred", "red", "darkblue", "blue"))
+```
+
+
+
+## **PLOTS AS LAYERS**
+
+Plots can be built by adding layers. As usually occur with R, there are different ways of doing the same thing. For example, you can represent points as circles connected by lines following these three approaches:
+
+```{r eval=TRUE, echo=TRUE}
+xx <- 1:100
+set.seed(123)
+yy <- rnorm(100)
+
+# 1.- Plot points and add lines:
+plot(xx, yy)
+lines(xx,yy)
+
+# 2.- Plot lines and add points:
+ plot(xx, yy,type="l")
+ points(xx, yy)
+
+# 3.- Using the argument type="o" (overlapped)
+ plot(xx, yy,type="o")
+
+# NOTE: There are other options, the default is "p" (points)
+ plot(xx, yy,type="p")
+ plot(xx, yy,type="l")
+ plot(xx, yy,type="b")
+ plot(xx, yy,type="h")
+```
+
+Linear regressions and curves can also be added as layers:
+ 
+```{r eval=TRUE, echo=TRUE}
+
+# adding regressions
+plot(bumpus$TL, bumpus$AE)
+fit <- lm(AE ~ TL, data = bumpus)
+abline(fit, col='red')
+
+hist(bumpus$TL, main="Histogram of total length", xlab="Total length", 
+     breaks=20, freq=F)
+lines(density(bumpus$TL))	# Add a Kernel density plot
+
+plot(density(bumpus$TL), main="Kernel Density of Total Length")
+polygon(density(bumpus$TL), col="grey" , border="blue", lwd=2)
+curve(dnorm(x, mean=mean(bumpus$TL), sd=sd(bumpus$TL)), col="red", lwd=2,  lty=2,xlim=range(bumpus$TL))						# Add a normal curve
+
+plot(density(bumpus$TL), main="Kernel Density of Total Length")
+polygon(density(bumpus$TL), col="grey" , border="blue", lwd=2)
+curve(dnorm(x, mean=mean(bumpus$TL), sd=sd(bumpus$TL)), add=T, col="red", lwd=2,      
+      lty=2)					# Add a normal curve
+```
+
+
+
+
+## **LAYERS FROM SCRATCH**
+
+```{r eval=TRUE, echo=TRUE}
+
+plot(bumpus$TL, bumpus$AE) # Check the axis dimensions
+range(bumpus$TL)
+range(bumpus$AE)
+```
+```{r eval=TRUE, echo=TRUE}
+
+#dev.new()
+plot.new()
+plot.window(c(150, 170), c(220, 260))
+axis(1)
+axis(2)
+box()
+title(main="A plot from scratch", xlab="Total Length", ylab="Alar Extent")
+text(bumpus$TL, bumpus$AE, bumpus$sex)
+
+
+points(160, 225, col='red')
+text(160, 225, "I want to write something here!")
+
+points(152, 256, col='red')
+text(152, 256, "<- not centered! Where the arrow points!", pos=4)
+
+text(160, 218.5, "Can I write outside?")
+
+mtext("Yes, you can write outside here..", side=1, line=4)
+mtext("... also here", side=3)
+```
+
+
+## **Controlling plot aesthetics**
+
+Almost anything you want to control in R plotting is available through par()
+```{r eval=FALSE, echo=TRUE}
+?par
+```
+
+```{r eval=TRUE, echo=TRUE}
+layout(matrix(1:4, nrow=2, byrow=T))
+plot(bumpus$HL~bumpus$TL)
+
+# POINT STYLE ####
+# Point size
+# Half the default value
+plot(bumpus$HL~bumpus$TL, cex=0.5)
+# Larger than default
+plot(bumpus$HL~bumpus$TL, cex=1.5)
+# Depending on 
+plot(bumpus$HL~bumpus$TL, cex=10*(log(bumpus$TL)-5),col="blue")
+
+# Point colour (see ColorChart.pdf and execute):
+colors()
+
+# Point type (see pch.png and execute):
+plot(1:25,pch=1:25)
+# Depending on the shape, col will affect the line or the background:
+plot(1:25,pch=1:25,col="red")
+# Some of the shapes may be filled with different colors using bg.
+plot(1:25,pch=1:25,col="red",bg="blue")
+# In addition, you can use any character as pch:
+plot(1:25,pch=c(letters[1:18],"@","*","#","$","%","&","~"),col="red",bg="blue")
+
+# Going back to the bumpus
+layout(matrix(1:6,ncol=3,byrow=T))
+
+plot(bumpus$HL~bumpus$TL)
+
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="red", pch=23)
+
+# Point background colour
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="red", pch=23, bg="black")
+
+# Plotting by group
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="red", pch=23, bg=bumpus$sex)
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"))
+
+# Line thickness
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2)
+
+# AXES STYLE ####
+# Axes titles
+layout(matrix(1:4, nrow=2, byrow=T))
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length")
+
+# Axes label font size
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.5)
+
+# Axes font types
+# For labels
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2)
+
+# For axis values
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, cex.axis=0.8, font.axis=4)
+
+# Suppressing the axes
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, xaxt="n")
+
+# Custom axis plotting
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, xaxt="n")
+# There is no x-axis at this point. Let's create it:
+axis(1, at=c(155, 160, 165), labels=c("small", "medium", "large"),
+     font.axis=2, cex.lab=1.5, font.lab=2)
+
+# EXTENT, BOX, AND BACKGROUND ####
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, cex.axis=0.8,
+     xlim=c(145, 170), ylim=c(15, 25))
+
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="l")
+
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2)
+
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="7")
+
+     plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="u")
+
+     plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+
+# USING par()
+layout(matrix(1:2, nrow=1, byrow=T))
+
+par(bg="yellow")
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+
+par(family="Times")
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+
+layout(matrix(1:2, nrow=1, byrow=T))
+# Setting both, family and bg:
+par(family="Times", bg="white")
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+
+#Setting the margins
+par(mar=c(0,0,0,0)) 
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+# Plot margins
+layout(matrix(1:4, nrow=2, byrow=T))
+par(family="Times", bg="white", mar=c(5, 5, 0, 0))
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+
+# Axis line and label spacing
+par(family="Times", bg="white", mar=c(5, 5, 0, 0), mgp=c(2, 0.5, 0))
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+
+par(family="Times", bg="white", mar=c(5, 5, 0, 0), mgp=c(2, 0.5, 0.2))
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+
+par(family="Times", bg="white", mar=c(5, 5, 0, 0), mgp=c(2, 0.5, 0.5))
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="]")
+
+# Plot size
+layout(1)
+par(family="Times", bg="white", mar=c(5, 5, 0, 0), mgp=c(2, 0.5, 0.2),
+    pin=c(1.5, 1.5))
+plot(bumpus$HL~bumpus$TL, cex=1.25, col="black", pch=23, 
+     bg=ifelse(bumpus$sex=="f", "red", "blue"), lwd=2,
+     xlab="Total lenght", ylab="Head length",
+     cex.lab=1.25, font.lab=2, bty="n")
+
