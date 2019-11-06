@@ -197,7 +197,7 @@ Using this package we will load DNA sequences of the *Halobacterium* bacteria sp
 ```{r}
 library("Biostrings")
 
-my.seq <- readDNAStringSet("data/Halobacterium.ffn")
+my.seq <- readDNAStringSet("Halobacterium.ffn")
 my.seq
 ```
 

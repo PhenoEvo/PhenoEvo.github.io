@@ -203,34 +203,34 @@ $(document).ready(function () {
                      CT = rnorm(12, mean = 36, sd = 2) - rep(c(3, -3), each = 6))
 my.exp</code></pre>
 <pre><code>##        stage temperature       CT
-## 1    tadpole        cold 34.97076
-## 2    tadpole        cold 32.78012
-## 3  metamorph        cold 30.44485
-## 4  metamorph        cold 36.30455
-## 5      adult        cold 32.94592
-## 6      adult        cold 36.12870
-## 7    tadpole        warm 38.06060
-## 8    tadpole        warm 39.75656
-## 9  metamorph        warm 40.59840
-## 10 metamorph        warm 41.00153
-## 11     adult        warm 39.01441
-## 12     adult        warm 37.99395</code></pre>
+## 1    tadpole        cold 30.77282
+## 2    tadpole        cold 34.99762
+## 3  metamorph        cold 35.09579
+## 4  metamorph        cold 30.71882
+## 5      adult        cold 37.14668
+## 6      adult        cold 32.99633
+## 7    tadpole        warm 39.71115
+## 8    tadpole        warm 39.72101
+## 9  metamorph        warm 38.06312
+## 10 metamorph        warm 35.67431
+## 11     adult        warm 38.23341
+## 12     adult        warm 35.91882</code></pre>
 <p>By making use of the <code>paste()</code> function, we will create a new column with the combination of ontogenetic stage and temperature treatment:</p>
 <pre class="r"><code>my.exp$st.tmp &lt;- paste(my.exp$stage, my.exp$temperature, sep='_')
 my.exp</code></pre>
 <pre><code>##        stage temperature       CT         st.tmp
-## 1    tadpole        cold 34.97076   tadpole_cold
-## 2    tadpole        cold 32.78012   tadpole_cold
-## 3  metamorph        cold 30.44485 metamorph_cold
-## 4  metamorph        cold 36.30455 metamorph_cold
-## 5      adult        cold 32.94592     adult_cold
-## 6      adult        cold 36.12870     adult_cold
-## 7    tadpole        warm 38.06060   tadpole_warm
-## 8    tadpole        warm 39.75656   tadpole_warm
-## 9  metamorph        warm 40.59840 metamorph_warm
-## 10 metamorph        warm 41.00153 metamorph_warm
-## 11     adult        warm 39.01441     adult_warm
-## 12     adult        warm 37.99395     adult_warm</code></pre>
+## 1    tadpole        cold 30.77282   tadpole_cold
+## 2    tadpole        cold 34.99762   tadpole_cold
+## 3  metamorph        cold 35.09579 metamorph_cold
+## 4  metamorph        cold 30.71882 metamorph_cold
+## 5      adult        cold 37.14668     adult_cold
+## 6      adult        cold 32.99633     adult_cold
+## 7    tadpole        warm 39.71115   tadpole_warm
+## 8    tadpole        warm 39.72101   tadpole_warm
+## 9  metamorph        warm 38.06312 metamorph_warm
+## 10 metamorph        warm 35.67431 metamorph_warm
+## 11     adult        warm 38.23341     adult_warm
+## 12     adult        warm 35.91882     adult_warm</code></pre>
 <p>Other functions (e.g. <code>strsplit()</code>) help you to split a strings, rather than paste two (or several) strings together. We will show this with an example dataset containing occurrence points for green lizards. So the first step is to load the dataset (remember that you will need to change the working directory, or set the path to the file):</p>
 <pre class="r"><code>gliz_occ &lt;- read.table('green_liz_occ_v2.txt', sep='\t', 
                        header=T, stringsAsFactors=F)
@@ -431,16 +431,16 @@ micro &lt;- micro_global()</code></pre>
 <pre><code>## extracting climate data</code></pre>
 <pre><code>## extracting soil moisture data</code></pre>
 <pre><code>## running microclimate model for 12 days by 1 years at site long -89.40123 lat 43.07305</code></pre>
-<pre><code>## runtime 0.0869999999999997 seconds</code></pre>
+<pre><code>## runtime 0.0840000000000001 seconds</code></pre>
 <pre class="r"><code>end &lt;- Sys.time()
 time.elapsed &lt;- end - start
 
 sprintf(&quot;%s function took %.3f seconds to run&quot;, &quot;micro_global()&quot;, time.elapsed)</code></pre>
-<pre><code>## [1] &quot;micro_global() function took 1.862 seconds to run&quot;</code></pre>
+<pre><code>## [1] &quot;micro_global() function took 1.849 seconds to run&quot;</code></pre>
 <p>Or we could just use the <code>paste()</code> function:</p>
 <pre class="r"><code>func &lt;- &quot;micro_global()&quot;
 paste(func , &quot;function took&quot;, round(time.elapsed, digits=3), &quot;to run&quot;, sep=' ')</code></pre>
-<pre><code>## [1] &quot;micro_global() function took 1.862 to run&quot;</code></pre>
+<pre><code>## [1] &quot;micro_global() function took 1.849 to run&quot;</code></pre>
 </div>
 <div id="specific-applications" class="section level2">
 <h2><strong>Specific applications</strong></h2>
@@ -486,7 +486,7 @@ BiocManager::install(&quot;Biostrings&quot;)</code></pre>
 <pre><code>## The following object is masked from 'package:base':
 ## 
 ##     strsplit</code></pre>
-<pre class="r"><code>my.seq &lt;- readDNAStringSet(&quot;data/Halobacterium.ffn&quot;)
+<pre class="r"><code>my.seq &lt;- readDNAStringSet(&quot;Halobacterium.ffn&quot;)
 my.seq</code></pre>
 <pre><code>##   A DNAStringSet instance of length 2058
 ##        width seq                                       names               
