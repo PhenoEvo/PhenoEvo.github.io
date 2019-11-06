@@ -1,0 +1,254 @@
+---
+title: "Introduction to R: String manipulation"
+author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
+date: "4-8 November 2019"
+output: html_document
+---
+
+## **Content Description**
+
+This lecture focuses on how to manipulate character variables. This can be really helpful to modify species names in dataframes, create new variables with combinations of treatments etc. String manipulation is a whole universe, and it is not feasible to cover all the functions and option. Here we will show some useful functions and applications. 
+
+## **Paste and Split strings**
+
+In previous lectures we have already seen a very useful string manipulation function (i.e. `paste()`) that can be used to combine vectors. To show this we will create a dataframe representing an experiment (critical thermal limits measured in three different ontogenetic stages of an amphibian species, exposed to two temperatures). 
+
+```{r}
+my.exp <- data.frame(stage = rep(c('tadpole', 'metamorph', 'adult'), each=2, times=2),
+                     temperature = rep(c('cold', 'warm'), each = 6),
+                     CT = rnorm(12, mean = 36, sd = 2) - rep(c(3, -3), each = 6))
+my.exp
+```
+
+By making use of the `paste()` function, we will create a new column with the combination of ontogenetic stage and temperature treatment:
+
+```{r}
+my.exp$st.tmp <- paste(my.exp$stage, my.exp$temperature, sep='_')
+my.exp
+```
+
+
+Other functions (e.g. `strsplit()`) help you to split a strings, rather than paste two (or several) strings together.  We will show this with an example dataset containing occurrence points for green lizards. So the first step is to load the dataset (remember that you will need to change the working directory, or set the path to the file):
+
+```{r}
+gliz_occ <- read.table('green_liz_occ_v2.txt', sep='\t', 
+                       header=T, stringsAsFactors=F)
+str(gliz_occ)
+```
+
+Note that the binomial names of species are separated by an underscore:
+
+```{r}
+unique(gliz_occ$Species) # unique() is a handy function to identify the unique elements
+```
+
+We can separate the genus and specific names by finding the underscore and using the `strsplit()` function:
+
+```{r, eval=F}
+strsplit(gliz_occ$Species, '_')
+```
+```{r, echo=F}
+head(strsplit(gliz_occ$Species, '_'))
+```
+
+
+## **Regular expressions**
+
+There are other functions related to string manipulation based on regular expressions. Regular expressions are patterns that describes a set of strings (definition extracted from `?regex`). This means that we will search for a certain pattern in our character(s) vector(s).
+
+We can identify which elements have a certain pattern. Using the green lizard's occurrence dataset, we will find which species (rows in this case) have `Lac` in their names? Be careful, as in general, this functions are also case sensitive:
+
+```{r}
+grep('Lac', gliz_occ$Species)
+grep('lac', gliz_occ$Species)
+```
+
+And which have `Tim` in their name? It is possible to invert our search pattern, by using `invert = T` as argument. 
+
+```{r}
+grep('Tim', gliz_occ$Species)
+grep('Lac', gliz_occ$Species, invert=T)
+```
+
+We can also ask which elements in the `Species` column have an underscore:
+
+```{r}
+grep('_', gliz_occ$Species)
+```
+
+
+Instead of finding which elements have an underscore, it might be more interesting to know *in which position* is the underscore within each element. For that purpose exists the function `regexpr()`, which stands for regular expressions:
+
+```{r}
+regexpr('_', gliz_occ$Species)
+```
+
+This is very useful if we want to extract specific parts of a character string. For instance, in this example we might be interested in extracting the genus of each species. Knowing where the underscore is, we know where the name of the genus ends:
+
+```{r}
+genus_end <- regexpr('_', gliz_occ$Species) - 1
+```
+
+Having this information we can use the function `substr()` to *subset* that *string* and create a new column with the genus name. To subset strings we have to specify the string vector that we want to subset, and the position of the first and last "character" that we want to extract.
+
+```{r, eval=F}
+substr(gliz_occ$Species, 1, genus_end)
+```
+```{r, echo=F}
+head(substr(gliz_occ$Species, 1, genus_end))
+```
+```{r}
+gliz_occ$genus <- substr(gliz_occ$Species, 1, genus_end)
+
+head(gliz_occ)
+table(gliz_occ$genus)
+```
+
+Now we can do the same for specific names (i.e. the second part of species binomial names). Thus, we want to know where the specific name starts:
+
+```{r}
+species_start <- regexpr('_', gliz_occ$Species) + 1
+```
+
+And since species names differ in length, we need to know the number of "characters" in each element of the string vector. The function for that is `nchar()` (i.e. number of characters):
+
+```{r}
+nchar(gliz_occ$Species)
+```
+
+Using these two functions we can create another column with species specific names:
+
+```{r}
+gliz_occ$sp <- substr(gliz_occ$Species, species_start, nchar(gliz_occ$Species))
+
+head(gliz_occ)
+str(gliz_occ)
+
+table(gliz_occ$sp)
+```
+
+Besides that, we might just be interested in replacing certain characters. Among the many functions that allow us to do that we have the general `sub()` and `gsub()` functions. Lets substitute the underscore with an space:
+
+```{r, eval=F}
+sub("_", " ", gliz_occ$Species)
+```
+```{r, echo=F}
+head(sub("_", " ", gliz_occ$Species))
+```
+```{r}
+gliz_occ$Sp_spaces <- sub("_", " ", gliz_occ$Species)
+```
+
+The `sub()` function only works with the first match of the expression. To substitute all the matches of an expression you have to use the `gsub()` function:
+
+```{r}
+gliz_occ$subsp <- paste(gliz_occ$Species, gliz_occ$Species, sep='_')
+```
+```{r, eval=F}
+sub("_", " ", gliz_occ$subsp)
+```
+```{r, echo=F}
+head(sub("_", " ", gliz_occ$subsp))
+```
+```{r, eval=F}
+gsub("_", " ", gliz_occ$subsp)
+```
+```{r, echo=F}
+head(gsub("_", " ", gliz_occ$subsp))
+```
+
+
+## **Other useful functions**
+
+There are other functions that allow to print messages with stored values. That is very useful to print custom warnings, error messages, or some other useful information. As always that can be achieved in different ways. A typical way is using the `sprintf()` function:
+
+```{r}
+sprintf("%s's MolEcol paper has %.2f citations per year", "Pedro", 32.3)
+
+library(NicheMapR)
+
+start <- Sys.time()
+micro <- micro_global()
+end <- Sys.time()
+time.elapsed <- end - start
+
+sprintf("%s function took %.3f seconds to run", "micro_global()", time.elapsed)
+```
+
+Or we could just use the `paste()` function:
+
+```{r}
+func <- "micro_global()"
+paste(func , "function took", round(time.elapsed, digits=3), "to run", sep=' ')
+```
+
+
+## **Specific applications**
+
+In case you need to do string manipulation on special objects (e.g. sequence data), there are specific R-packages that allow you to do that. We will be using `Biostrings`, that has to be installed from `Bioconductor`. To install packages from Bioconductor you need to install `BiocManager` and install the specific package you are interested in by typing `BiocManager::install("name_of_the_package")`.
+
+```{r, eval=F}
+install.packages('BiocManager')
+BiocManager::install("Biostrings")
+```
+
+Using this package we will load DNA sequences of the *Halobacterium* bacteria species (you can download this FASTA file from the data tab). 
+
+```{r}
+library("Biostrings")
+
+my.seq <- readDNAStringSet("data/Halobacterium.ffn")
+my.seq
+```
+
+The generic functions that we saw above will also work on this data. For instance, we can use `grep()` to find the sequences that have an specific pattern in their names and we can subset those sequences:
+
+```{r}
+grep("c6.*", names(my.seq))
+
+sub <- my.seq[grep("c6.*", names(my.seq))]
+length(sub)
+```
+
+Furthermore, using specific functions in the `Biostrings` package we can identify how many times is a pattern present in a single sequence:
+
+```{r}
+countPattern("ATGGCT", sub[[1]], max.mismatch=1)
+```
+
+Or in many sequences at the same time:
+
+```{r}
+vcountPattern("ATGGCT", sub, max.mismatch=1)
+```
+
+And here is a "real life" example. Imagine that we want to find if a restriction enzyme will work in the sequence that we are interested. Our focal sequence is that of the chromosome 1 of a yeast species. We will load the data and have a look at it:
+
+```{r}
+data(yeastSEQCHR1) # With DNA sequence of yeast chromosome number 1:
+str(yeastSEQCHR1)
+nchar(yeastSEQCHR1)
+```
+
+Then, we will convert that sequence in a particular class of the package `Biostrings` (i.e."DNAString"):
+
+```{r}
+yeast1 <- DNAString(yeastSEQCHR1)
+```
+
+Once we have our sequence(s) in the proper format, we can find if there are matches for the pattern of our restriction enzyme. We can find exact matches:
+
+```{r}
+PpiI <- "GAACNNNNNCTC"  # a restriction enzyme pattern
+match1.PpiI <- matchPattern(PpiI, yeast1, fixed=FALSE)
+match1.PpiI
+```
+
+Or we can allow for mismatches (e.g. in one position):
+
+```{r}
+match2.PpiI <- matchPattern(PpiI, yeast1, max.mismatch=1, fixed=FALSE)
+match2.PpiI
+```
+
+
