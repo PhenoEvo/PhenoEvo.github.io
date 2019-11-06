@@ -24,7 +24,7 @@
 2.4. Practical session: bring and load your own data
 
 
-3.1. Data indexing
+[3.1. Data indexing](https://phenoevo.github.io/Intro2R/lectures/3.1_Data-indexing.html)
 
 3.2. Reviewing and tabulating your data
 
