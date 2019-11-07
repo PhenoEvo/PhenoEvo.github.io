@@ -44,7 +44,7 @@
   + [lecture](https://phenoevo.github.io/Intro2R/lectures/4.1_Conditionals.html) 
   + [exercises](https://phenoevo.github.io/Intro2R/lectures/4.1_Conditionals_Exercises.pdf)
 
-4.2. Control functions II: loops
+4.2. [Control functions II: loops](https://phenoevo.github.io/Intro2R/lectures/4.2_loops.html)
 
 4.3. Practice session: control functions
 
