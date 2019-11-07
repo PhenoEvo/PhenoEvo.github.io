@@ -34,6 +34,10 @@
 
 3.5. Practice session: plots, indexing and data
 
+  + [plot](https://phenoevo.github.io/Intro2R/lectures/3.5_Example1.pdf)
+  
+  + [data](https://phenoevo.github.io/Intro2R/lectures/3.5_Example1.txt)
+
 
 4.1. Control functions I: conditionals
 
