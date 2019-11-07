@@ -30,7 +30,7 @@
 
 [3.3. String manipulation](https://phenoevo.github.io/Intro2R/lectures/3.3_String_manipulation.html)
 
-3.4. Plotting
+[3.4. Plotting](https://phenoevo.github.io/Intro2R/lectures/3.4_Plotting.html)
 
 3.5. Practice session: plots, indexing and data
 
