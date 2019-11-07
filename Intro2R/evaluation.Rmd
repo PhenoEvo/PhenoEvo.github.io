@@ -8,15 +8,21 @@
 
 In pairs, choose and write code to reproduce at least one of the graphs below. The data needed are available [**here**](https://phenoevo.github.io/Intro2R/evaluation/plot-data.zip)
 
-```{r, echo=FALSE, out.width="30%", out.height="20%", fig.cap=c(1, 2, 3), fig.show='hold', fig.align='center'}
-knitr::include_graphics(c("evaluation/plots/1.png", "evaluation/plots/2.png", "evaluation/plots/3.png"))
-```
+| [![](evaluation/plots/1.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/1.png) | [![](evaluation/plots/2.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/2.png) | [![](evaluation/plots/3.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/3.png) |
+|:--:| :--:| :--:| 
+| **1** | **2** | **3** |
 
-[![1](evaluation/plots/1.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/1.png)
+| [![](evaluation/plots/4.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/4.png) | [![](evaluation/plots/5.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/5.png) | [![](evaluation/plots/6.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/6.png) |
+|:--:| :--:| :--:| 
+| **4** | **5** | **6** |
 
-![2](evaluation/plots/2.png)![3](evaluation/plots/3.png)
+| [![](evaluation/plots/7.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/7.png) | [![](evaluation/plots/8.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/8.png) | [![](evaluation/plots/9.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/9.png) |
+|:--:| :--:| :--:| 
+| **7** | **8** | **9** |
 
-
+| [![](evaluation/plots/10.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/10.png) | [![](evaluation/plots/11.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/11.png) | [![](evaluation/plots/12.png)](https://phenoevo.github.io/Intro2R/evaluation/plots/12.png) |
+|:--:| :--:| :--:| 
+| **10** | **11** | **12** |
 
 Some specific instructions for each graph:
 
