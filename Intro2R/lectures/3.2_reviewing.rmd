@@ -1,5 +1,5 @@
 ---
-title: "Data types II: dataframes, lists, and other data types"
+title: "Reviewing and tabulating your data"
 author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
 date: "4-8 November 2019"
 output: html_document
@@ -79,6 +79,11 @@ tail(bumpus, 2)
 
 ---
 
+### $\color{red}{\text{CHALLENGE}}$
+
+2. Find another way to show the head and tail of a table.
+
+---
 
 Checking other proprieties of the table may help to debug some errors on the
 data. For instance, if we know the number of samples in out dataset, we expect
@@ -92,13 +97,6 @@ dim(bumpus)
 names(bumpus)
 
 ```
-
-### $\color{red}{\text{CHALLENGE}}$
-
-2. Find another way to show the head and tail of a table.
-
----
-
 
 A very useful command is the *str* that displays details of the structure of an
 object. Here we can have indication of the type (numeric, character, etc) of 
@@ -289,7 +287,7 @@ apply(X=bumpus.num, MARGIN=1, FUN=sd)
 
 ### $\color{red}{\text{CHALLENGE}}$
 
-6. Can you get the percentile 93% of every column in bumpus.num?
+5. Can you get the percentile 93% of every column in bumpus.num?
 
 ---
 
@@ -307,7 +305,7 @@ cor(bumpus.num)
 
 ### $\color{red}{\text{CHALLENGE}}$
 
-7. Try to get the spearman correlation matrix.
+6. Try to get the spearman correlation matrix.
 
 ---
 
@@ -325,7 +323,7 @@ age.table <- table(bumpus$age)
 
 ### $\color{red}{\text{CHALLENGE}}$
 
-8. What value does this table hold?
+7. What value does this table hold?
 
 ---
 
@@ -358,8 +356,8 @@ prop.bumpus <- prop.table(bumpus.num, margin=2)
 
 ### $\color{red}{\text{CHALLENGE}}$
 
-9. Correct the error!
-10. Check column sums to see if the results is as expected.
+8. Correct the error!
+9. Check column sums to see if the results is as expected.
 
 ---
 

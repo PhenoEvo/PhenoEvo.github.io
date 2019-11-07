@@ -1,5 +1,5 @@
 ---
-title: "Data types II: dataframes, lists, and other data types"
+title: "Control functions II: loops"
 author: "A. Kaliontzopoulou, A. Jesús Muñoz-Pajares, P. Tarroso, U. Enriquez-Urzelai"
 date: "4-8 November 2019"
 output: html_document
