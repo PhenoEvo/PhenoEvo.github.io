@@ -1,0 +1,440 @@
+---
+title: "Conditionals"
+author: "A. Jesús Muñoz-Pajares"
+date: "4-8 NOVEMBER 2019"
+output: html_document
+---
+
+
+### ** Basic usage:** 
+if(condition){
+code
+}
+
+# Where "condition" can be everything
+# that evaluates to a logical
+
+# Conditions can be simple...
+```{r eval=FALSE}
+if(condition1){
+code
+}
+```
+
+# example: 
+```{r eval=TRUE}
+a<-2
+if(is.numeric(a)){
+	print("a is numeric.")
+}
+```
+#  ...or more complex sentences
+```{r eval=FALSE}
+if(condition1 & condition2 |  condition1 & condition3){
+code
+}
+```
+
+```{r eval=TRUE}
+# example: 
+if(is.numeric(a) & a<0 | is.numeric(a) & a>0){
+	print("a is numeric and it is not zero.")
+}
+```
+
+# They can also be nested, that is, the "code" may contain if() functions.
+
+```{r eval=FALSE}
+  if(condition1){
+  code
+  }
+
+if(condition1){
+	if(condition1a){
+		CODE1}
+	if(condition1b){
+		CODE2}
+}
+```
+# example: 
+
+```{r eval=TRUE}
+if(is.numeric(a)){
+	if(a>0){
+		print("a is numeric and it is positive")
+		}
+	if(a<0){
+		print("a is numeric and it is negative")
+		}
+}
+```
+
+# If condition1a and condition1b are the only two possibilities, this can be also implemented as follows:
+
+```{r eval=FALSE}
+if(condition1){
+	if(condition1a){
+		CODE1} else {
+		CODE2}
+}
+```
+
+
+# example: 
+```{r eval=TRUE}
+if(is.numeric(a)){
+	if(a>0){
+		print("a is numeric and it is positive")
+		} else {print("a is numeric and it is negative or zero")
+		}
+}
+```
+
+# And also using the function ifelse, as follows:
+
+```{r eval=FALSE}
+if(condition1){
+	ifelse(condition1a,CODE1,CODE2)
+}
+```
+
+```{r eval=TRUE}
+# example: 
+if(is.numeric(a)){
+	ifelse(a>0,	"a is numeric and it is positive","a is numeric and it is negative")
+}
+```
+
+# Thus, in specific cases you may use the ifelse, if-else, and if-elseif-else functions
+
+# Let's take a look on these functions with the following examples:
+
+# *Example 1: The logarithm*
+#==========================
+
+# Imagine that you have a random number and
+# you want to apply a function only
+# if the number is positive
+
+```{r eval=TRUE}
+RandomNumber <- rnorm(1)
+if(RandomNumber>0){
+	print(log(RandomNumber))
+}
+```
+# But maybe if it is negative you want to do
+# something (e.g., print an error)
+```{r eval=TRUE}
+ set.seed(1)
+RandomNumber <- rnorm(1)
+RandomNumber
+if(RandomNumber<=0){
+	print("Error! Cannot compute logarithms of negative values")
+}
+if(RandomNumber>0){
+	log(RandomNumber)
+}
+```
+# Two if() functions can be substituted by an 
+# if..else or an ifelse() function
+
+```{r eval=TRUE}
+RandomNumber <- rnorm(1)
+if(RandomNumber<=0){
+	"Error! Cannot compute logarithms of negative values"
+} else {
+	log(RandomNumber)
+}
+```
+
+# Providing the result at the end:
+```{r eval=TRUE}
+set.seed(10)
+RandomNumber <- rnorm(1)
+if(RandomNumber<=0){
+	Result <- "Error! Cannot compute logarithms of negative values"
+} else {
+	Result <- log(RandomNumber)
+}
+Result
+
+
+RandomNumber <- rnorm(1)
+ifelse(RandomNumber<=0,
+	"Error! Cannot compute logarithms of negative values",
+	log(RandomNumber))
+```
+
+# Example 2: Comparing with mean values
+# =====================================
+## Print different messages with a binary condition
+## if - else
+
+```{r eval=TRUE}
+bumpus <- read.table(file="bumpus.csv",sep=",",header=T)
+TL_1 <- bumpus$TL[1]
+TL_avg <- mean(bumpus$TL)
+
+if (TL_1 > TL_avg) {
+    print("Bigger than the average!")
+} else {
+    print("Smaller or equal than the average!")
+}
+
+## when condition is not binary 
+## if - else if - else
+TL_sd <- sd(bumpus$TL)
+
+if (TL_1 <= TL_avg - 1.96*TL_sd) {
+    print("Below 95% of distribution")
+} else { 
+	if (TL_1 > TL_avg - 1.96*TL_sd & TL_1 < TL_avg + 1.96*TL_sd) {
+	    print("Within the 95% distribution")
+		} else {
+	    print("Above the 95% distribution")}
+}
+```
+
+# Example 3: Tossing a coin
+# ==========================
+```{r eval=TRUE}
+CoinFlip  <-  sample(c("head","tail"),1)
+YourChoice  <-  "head"
+if(CoinFlip==YourChoice){
+    print("You win!!")
+}
+# You will get a response only if you won
+
+# Now let's provide a response in both cases
+CoinFlip <- sample(c("head","tail"),1)
+YourChoice <- "head"
+if(CoinFlip==YourChoice){
+"You win!!!"
+}
+if(CoinFlip!=YourChoice){
+"Loooooseeer!! HA HA HA"
+}
+
+# But the output is lost within the code.
+# We can create an object and only call at the end:
+CoinFlip <- sample(c("head","tail"),1)
+YourChoice <- "head"
+if(CoinFlip==YourChoice){
+Result <- "You win!!!"
+}
+if(CoinFlip!=YourChoice){
+Result <- "Loooooseeer!! HA HA HA"
+}
+Result
+
+# The same can be done using the if..else functions.
+# In that case the second part is only evaluated if the former is FALSE
+CoinFlip  <-  sample(c("head","tail"),1)
+YourChoice  <-  "head"
+if(CoinFlip==YourChoice) {
+    Result  <-  "You win!!!"
+} else {
+    Result  <-  "Loooooseeer!! HA HA HA"
+}
+Result
+
+
+# Alternatively, we can use ifelse:
+CoinFlip <- sample(c("head","tail"),1)
+YourChoice <- "head"
+Result <- ifelse(CoinFlip==YourChoice, "You win!!","Loooooseeer!! HA HA HA")
+Result
+```
+
+# Example 4: Guessing the number
+# ==============================
+```{r eval=TRUE}
+
+# Randomly sample a value between 9 and 11
+Random <- sample(9:11,1)
+
+# If the remainder of dividing by 2 is 0, it is pair => 10
+if(Random%%2==0){
+Result <- "The number is 10"
+}
+
+# If the remainder of dividing by 3 is 0 => 9
+if(Random%%3==0){
+Result <- "The number is 9"
+}
+
+# If the remainder of dividing by 3 and 2 is not 0 => 11
+if(Random%%2!=0 & Random%%3!=0){
+Result <- "The number is 11"
+}
+Result
+
+# using if-elseif-else
+Random <- sample(9:11,1)
+Result <- if(Random%%2==0){
+"The number is 10"
+} else if(Random%%3==0) {
+"The number is 9"
+} else {
+"The number is 11"}
+Result
+
+# Using nested ifelse functions:
+Random <- sample(9:11,1)
+Result <- ifelse(Random%%2==0,"The number is 10",{
+	ifelse(Random%%3==0,"The number is 9","The number is 11")
+})
+Result
+```
+
+# Example 5: rock–paper–scissors
+# ==========================
+
+
+# Nested if()
+```{r eval=TRUE}
+
+MyChoice <- "rock"
+Rchoice <- sample(c("rock","paper","scissors"),1)
+if(MyChoice=="rock"){
+	if(Rchoice=="paper"){
+		Result <- "Looooseeeer!!"
+	}
+	if(Rchoice=="scissors"){
+	Result <- "You win!"
+	}
+	if(Rchoice=="rock"){
+	Result <- "Tie!"
+	}
+}
+if(MyChoice=="paper"){
+	if(Rchoice=="scissors"){
+		Result <- "Looooseeeer!!"
+	}
+	if(Rchoice=="rock"){
+	Result <- "You win!"
+	}
+	if(Rchoice=="paper"){
+	Result <- "Tie!"
+	}
+}
+if(MyChoice=="scissors"){
+	if(Rchoice=="rock"){
+		Result <- "Looooseeeer!!"
+	}
+	if(Rchoice=="paper"){
+	Result <- "You win!"
+	}
+	if(Rchoice=="scissors"){
+	Result <- "Tie!"
+	}
+}
+Result
+```
+
+# Nested ifelse() within if()
+
+```{r eval=TRUE}
+
+MyChoice <- "rock"
+Rchoice <- sample(c("rock","paper","scissors"),1)
+if(MyChoice=="rock"){
+	ifelse(Rchoice=="paper",Result <- "Looooseeeer!!",ifelse(Rchoice=="scissors",Result <- "You win!",Result <- "Tie!"))
+}
+if(MyChoice=="paper"){
+	ifelse(Rchoice=="scissors",Result <- "Looooseeeer!!",ifelse(Rchoice=="rock",Result <- "You win!",Result <- "Tie!"))
+}
+if(MyChoice=="scissors"){
+	ifelse(Rchoice=="rock",Result <- "Looooseeeer!!",ifelse(Rchoice=="paper",Result <- "You win!",Result <- "Tie!"))
+}
+Result
+```
+
+# Nested ifelse() within if-elseif-else
+
+```{r eval=TRUE}
+MyChoice <- "rock"
+Rchoice <- sample(c("rock","paper","scissors"),1)
+if (MyChoice=="rock") {
+	ifelse(Rchoice=="paper",Result <- "Looooseeeer!!",ifelse(Rchoice=="scissors",Result <- "You win!",Result <- "Tie!"))
+} else if (MyChoice=="paper") {
+	ifelse(Rchoice=="scissors",Result <- "Looooseeeer!!",ifelse(Rchoice=="rock",Result <- "You win!",Result <- "Tie!"))
+} else {
+	ifelse(Rchoice=="rock",Result <- "Looooseeeer!!",ifelse(Rchoice=="paper",Result <- "You win!",Result <- "Tie!"))
+}
+Result
+```
+
+# Another way
+```{r eval=TRUE}
+MyChoice <- "rock"
+Rchoice <- sample(c("rock","paper","scissors"),1)
+if(MyChoice==Rchoice)
+	Result <- "Tie!"
+if(MyChoice!=Rchoice)
+	{
+	if(MyChoice=="rock")
+		ifelse(Rchoice=="paper",Result <- "Looooseeeer!!",Result <- "You win!")
+	if(MyChoice=="paper")
+		ifelse(Rchoice=="scissors",Result <- "Looooseeeer!!",Result <- "You win!")
+	if(MyChoice=="scissors")
+		ifelse(Rchoice=="rock",Result <- "Looooseeeer!!",Result <- "You win!")
+	}
+Result
+```
+
+rm(Result)
+
+# Exercise:
+# Find the error:
+
+```{r eval=FALSE}
+MyChoice <- "Rock"
+Rchoice <- sample(c("rock","paper","scissors"),1)
+if(MyChoice==Rchoice)
+	Result <- "Tie!"
+if(MyChoice!=Rchoice)
+	{
+	if(MyChoice=="rock")
+		ifelse(Rchoice=="paper",Result <- "Looooseeeer!!",Result <- "You win!")
+	if(MyChoice=="paper")
+		ifelse(Rchoice=="scissors",Result <- "Looooseeeer!!",Result <- "You win!")
+	if(MyChoice=="scissors")
+		ifelse(Rchoice=="rock",Result <- "Looooseeeer!!",Result <- "You win!")
+	}
+Result
+```
+
+# Include a error sentence if MyChoice is not one of the expected
+```{r eval=TRUE}
+MyChoice <- "rock"
+Rchoice <- sample(c("rock","paper","scissors"),1)
+if (MyChoice=="rock") {
+	ifelse(Rchoice=="paper",Result <- "Looooseeeer!!",ifelse(Rchoice=="scissors",Result <- "You win!",Result <- "Tie!"))
+} else if (MyChoice=="paper") {
+	ifelse(Rchoice=="scissors",Result <- "Looooseeeer!!",ifelse(Rchoice=="rock",Result <- "You win!",Result <- "Tie!"))
+} else if (MyChoice=="scissors") {
+	ifelse(Rchoice=="rock",Result <- "Looooseeeer!!",ifelse(Rchoice=="paper",Result <- "You win!",Result <- "Tie!"))
+
+} else {
+	print("ERROR. Available choices are paper, rock or scissors")
+}
+Result
+```
+
+# Include a line to convert MyChoice into lowercase
+```{r eval=TRUE}
+MyChoice <- "roCk"
+Rchoice <- sample(c("rock","paper","scissors"),1)
+if (tolower(MyChoice)=="rock") {
+	Result <- ifelse(Rchoice=="paper","Looooseeeer!!",ifelse(Rchoice=="scissors","You win!","Tie!"))
+} else if (tolower(MyChoice)=="paper") {
+	Result <- ifelse(Rchoice=="scissors","Looooseeeer!!",ifelse(Rchoice=="rock","You win!","Tie!"))
+} else if (tolower(MyChoice)=="scissors") {
+	Result <- ifelse(Rchoice=="rock","Looooseeeer!!",ifelse(Rchoice=="paper","You win!","Tie!"))
+
+} else {
+	print("ERROR. Available choices are paper, rock or scissors")
+}
+Result
+```
