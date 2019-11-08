@@ -11,5 +11,3 @@ navbar:
       href: lectures.html
     - text: "Data files"
       href: data.html
-    - text: "Evaluation"
-      href: evaluation.html
