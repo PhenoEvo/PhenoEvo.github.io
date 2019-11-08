@@ -49,7 +49,7 @@
 4.3. Practice session: control functions
 
 
-5.1. Some advanced features: build your function
+[5.1. Some advanced features: build your function](https://phenoevo.github.io/Intro2R/lectures/5.1_Building_Functions_Exercises.pdf)
 
 5.2. Practice session: function writing
 
