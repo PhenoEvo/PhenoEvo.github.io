@@ -53,6 +53,12 @@
 
 5.2. Practice session: function writing
 
-5.3. Showcase: statistical analysis of biological data
+[5.3. Showcase: statistical analysis of biological data](https://phenoevo.github.io/Intro2R/lectures/5.3_Showcase.pdf)
+
+  + [Zagar et al 2017](https://phenoevo.github.io/Intro2R/lectures/5.3.Showcase/Zagar et al_Funct.Ecol_2017.pdf)
+  + [data](https://phenoevo.github.io/Intro2R/lectures/5.3.Showcase/data.csv)
+  + [Rcode](https://phenoevo.github.io/Intro2R/lectures/5.3.Showcase/5.3_Showcase.R)
+  + [pls function](https://phenoevo.github.io/Intro2R/lectures/5.3.Showcase/5.3_Showcase.R)
+  
  
 
